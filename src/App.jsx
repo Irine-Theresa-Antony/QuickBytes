@@ -6,6 +6,7 @@ import './App.css'
 import Navbar from './components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import Display from './components/Display'
+import DashboardPage from './components/DashboardPage'
 
 
 
@@ -15,13 +16,13 @@ function App() {
   return (
     <>
 
-  
+     
      <Navbar/>
      <Routes>
      <Route path='/' element={<Display/>}></Route>
-     
+     <Route path='/r' element={<DashboardPage/>}></Route>
      </Routes>
-
+     
     </>
   )
 }
