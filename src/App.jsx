@@ -12,6 +12,14 @@ import Display from './components/Display'
 import Admin from './components/Admin'
 
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+import DashboardPage from './components/DashboardPage'
+import Custom from './components/Custom'
+
+
+
 >>>>>>> Stashed changes
 
 function App() {
@@ -28,6 +36,7 @@ function App() {
      <Routes>
      <Route path='/' element={<Display/>}></Route>
      <Route path='/admin' element={<Admin/>}></Route>
+     <Route path='/custom' element={<Custom/>}></Route>
      </Routes>
 
 >>>>>>> Stashed changes
