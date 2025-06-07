@@ -4,7 +4,10 @@ import React from 'react'
 const Admin = () => {
   return (
     <div>
-            <Button variant="contained">Total Users</Button>
+            <Button variant="contained" >Total Users</Button> <br /> <br />
+            <Button variant="contained" >New Users</Button><br /> <br />
+            <Button variant="contained" >Most Viewed</Button> <br />  <br />
+            
 
 
     </div>

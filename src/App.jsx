@@ -17,9 +17,6 @@ function App() {
     <>
 
      <Admin/>
-     
-
-       {/*  
 
      <Navbar/>
      <Routes>
@@ -27,7 +24,7 @@ function App() {
      
      </Routes>
 
-        */}
+
 
     </>
   )
