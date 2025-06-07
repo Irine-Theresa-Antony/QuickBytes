@@ -16,8 +16,6 @@ function App() {
   return (
     <>
 
-     <Admin/>
-
      <Navbar/>
      <Routes>
      <Route path='/' element={<Display/>}></Route>
