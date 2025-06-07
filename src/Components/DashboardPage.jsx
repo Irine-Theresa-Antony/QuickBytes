@@ -11,7 +11,9 @@ const DashboardPage = () => {
       {/* Sidebar */}
       <div style={{
         width: '200px',
+
         backgroundColor: '#1976D2', // Blue
+
         color: 'white',
         padding: '20px',
         display: 'flex',
