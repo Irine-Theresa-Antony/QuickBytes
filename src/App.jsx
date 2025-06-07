@@ -6,6 +6,7 @@ import './App.css'
 import Navbar from './components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import Display from './components/Display'
+import Admin from './components/Admin'
 
 
 
@@ -15,12 +16,18 @@ function App() {
   return (
     <>
 
-  
+     <Admin/>
+     
+
+       {/*  
+
      <Navbar/>
      <Routes>
      <Route path='/' element={<Display/>}></Route>
      
      </Routes>
+
+        */}
 
     </>
   )

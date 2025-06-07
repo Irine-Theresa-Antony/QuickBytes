@@ -1,8 +1,13 @@
+import { Button } from '@mui/material'
 import React from 'react'
 
 const Admin = () => {
   return (
-    <div>Admin</div>
+    <div>
+            <Button variant="contained">Total Users</Button>
+
+
+    </div>
   )
 }
 
