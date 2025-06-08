@@ -2,7 +2,7 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 
 const Custom = () => {
-    var [input, setinput]=useState({title:"",description:"",content:"",url:"",link:"",datetime:"",name:""});
+    var [input, setinput]=useState({title:"",des:"",content:"",url:"",link:"",datetime:"",name:""});
 
     const inputhandler=(e)=>{
           setinput({...input,[e.target.name]:e.target.value});
@@ -38,7 +38,7 @@ const Custom = () => {
     <Typography variant='h6' sx={{  textAlign: 'left' }}>Description Of The News:</Typography>
     
     
-    <TextField variant='outlined' label='description' fullWidth sx={{ mt: 2 }} onChange={inputhandler} name='description' value={input.description} ></TextField>
+    <TextField variant='outlined' label='description' fullWidth sx={{ mt: 2 }} onChange={inputhandler} name='des' value={input.des} ></TextField>
     <br/><br/>
     <Typography variant='h6' sx={{  textAlign: 'left' }}>Content Of The News:</Typography>
     
