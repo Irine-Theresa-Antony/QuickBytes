@@ -1,65 +1,88 @@
-import React, { useState } from 'react';
+import '../Dashboard.css';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const DashboardPage = () => {
+  const [note, setNote] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+  const handleNoteSubmit = (e) => {
+    e.preventDefault();
+
+    if (note.trim() === '') {
+      alert('Please write a note before submitting.');
+      return;
+    }
+
+    
+    const dateOnly = selectedDate.toISOString().split('T')[0];
+
+    const input = {
+      note: note,
+      date: dateOnly,
+    };
+
+    axios
+      .post('http://localhost:3000/notes', input)
+      .then((res) => {
+        console.log(res);
+        alert(res.data);
+        setNote('');
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('Error submitting note. Please try again.');
+      });
+  };
+
   return (
-    <div style={{ display: 'flex', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
-      
+    <div className="dashboard-container">
+
       {/* Sidebar */}
-      <div style={{
-        width: '200px',
-
-        backgroundColor: '#1976D2', // Blue
-
-        color: 'white',
-        padding: '20px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px'
-      }}>
-        <h2 style={{ margin: 0 }}>DASHBOARD</h2>
-        <button style={btnStyle}>PROFILE</button>
-        <button style={btnStyle}>COMPLAINTS</button>
-        <button style={btnStyle}>CONTACT INFO</button>
-        <button style={btnStyle}>TERMS AND CONDITIONS</button>
+      <div className="sidebar">
+        <h2>DASHBOARD</h2>
+        <button>
+          <Link to="/profile">PROFILE</Link>
+        </button>
+        <button>
+          <Link to="/complaints">COMPLAINTS</Link>
+        </button>
+        <button>CONTACT INFO</button>
+        <button>
+          <Link to="/terms">TERMS AND CONDITIONS</Link>
+        </button>
       </div>
 
-      {/* Main Content */}
-      <div style={{ flex: 1, backgroundColor: 'white', padding: '20px', position: 'relative' }}>
-        
-        {/* Calendar */}
-        <div style={{
-          position: 'absolute',
-          top: 20,
-          right: 20,
-          backgroundColor: '#2196f3', // Blue
-          padding: '10px',
-          borderRadius: '10px',
-          color: 'white'
-        }}>
-          <h4 style={{ margin: '0 0 10px 0' }}>Calendar</h4>
-          <Calendar onChange={setSelectedDate} value={selectedDate} />
+      {/* Main Area */}
+      <div className="main-content">
+        {/* Note Input */}
+        <div className="note-box">
+          <h3>📝 <strong>Write Your Note</strong></h3>
+          <form onSubmit={handleNoteSubmit}>
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Type your note here..."
+            />
+            <br />
+            <button type="submit">Submit</button>
+          </form>
         </div>
 
+        {/* Calendar */}
+        <div className="calendar-box">
+          <h4>Calendar</h4>
+          <Calendar
+            onChange={setSelectedDate}
+            value={selectedDate}
+          />
+        </div>
       </div>
     </div>
   );
 };
 
-const btnStyle = {
-  backgroundColor: '#2196f3', // Blue
-  border: 'none',
-  padding: '10px',
-  color: 'white',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  textAlign: 'left'
-};
-
 export default DashboardPage;
-
-
-
