@@ -6,6 +6,8 @@ import './App.css'
 import Navbar from './components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import Display from './components/Display'
+import SignUp from './components/SignUp'
+import Login from './components/Login'
 
 
 
@@ -14,12 +16,10 @@ function App() {
 
   return (
     <>
-
-  
-     <Navbar/>
+    
      <Routes>
-     <Route path='/' element={<Display/>}></Route>
-     
+     <Route path='/signup' element={<SignUp/>}></Route>
+     <Route path='/login'element={<Login/>}></Route>
      </Routes>
 
     </>
