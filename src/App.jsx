@@ -6,7 +6,7 @@ import './App.css'
 import Navbar from './components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import Display from './components/Display'
-import Admin from './components/Admin'
+import Admin from './Components/Admin'
 
 
 
@@ -18,7 +18,8 @@ function App() {
 
      <Navbar/>
      <Routes>
-     <Route path='/' element={<Display/>}></Route>
+     <Route path='/admin' element={<Admin/>}></Route>
+
      
      </Routes>
 
