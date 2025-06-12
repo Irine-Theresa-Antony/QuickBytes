@@ -1,6 +1,7 @@
 import { AppBar,Box, Button, IconButton, Toolbar, Typography,Menu, MenuItem } from '@mui/material'
 import React, { useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router-dom';
 
 const Navbar = ({ setCategory ,setCountry}) => {
   const [anchorEl, setAnchorEl] = useState(null); // for category button
@@ -69,6 +70,10 @@ const Navbar = ({ setCategory ,setCountry}) => {
           <Button color="inherit">
             Login
           </Button>
+
+             
+           <Button color="inherit"> <Link to ={'/r'} style={{color:"white"}}>dashboard</Link> </Button>
+
             
         </Toolbar>
       </AppBar>

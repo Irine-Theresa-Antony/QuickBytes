@@ -1,5 +1,6 @@
 
 
+
 import { Button, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -8,7 +9,7 @@ const Display = () => {
   const [articles, setArticles] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
-       
+
   const normalizeApi1 = (item) => ({
     title: item.title,
     description: item.description,
@@ -108,6 +109,7 @@ const Display = () => {
     };
   
 
+
   return (
     <div className="box">
       <Grid container spacing={2} justifyContent="center">
@@ -118,6 +120,9 @@ const Display = () => {
                           margin: 'auto',
                          backgroundColor: '#fff',
                          height: 450, display: 'flex', flexDirection: 'column', justifyContent: 'space-between'  }}>
+
+            <Card className="newscard" sx={{ maxWidth: 345 }}>
+
               <CardMedia sx={{ height: 240 }} image={val.image} title={val.title} />
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
@@ -147,6 +152,7 @@ const Display = () => {
                 </Button>
                 <Button size="small" onClick={() => handleOpen(val)}>
                  Learn More
+                
                 </Button>
               </CardActions>
             </Card>
@@ -179,6 +185,7 @@ const Display = () => {
                 </DialogActions>
               </Dialog>
             )}
+
     </div>
   );
 };
