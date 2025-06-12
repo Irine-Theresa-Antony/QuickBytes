@@ -2,23 +2,17 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-
-
-
 import { Route, Routes } from 'react-router-dom'
-import Admin from './Components/Admin'
-
-
 import SignUp from './components/SignUp'
 import Login from './components/Login'
-
 import DashboardPage from './components/DashboardPage'
 import Terms from './components/Terms'
 import Complaints from './components/Complaints'
 import Profile from './components/Profile'
 import Custom from './components/Custom'
-import Display from './Components/Display'
 import Navbar from './Components/Navbar'
+import Display from './components/Display'
+import Admin from './components/Admin'
 
 
 
@@ -31,12 +25,6 @@ function App() {
   return (
     <>
 
-
-     
-
-     
-
-  
      <Navbar setCategory={setCategory} setCountry={setCountry}/>
      <Routes>
      <Route path='/' element={<Display category={category}/>}></Route>
