@@ -15,7 +15,7 @@ const Display = () => {
     description: item.description,
     content: item.content,
     url: item.url,
-    image: item.urlToImage || 'https://via.placeholder.com/345x240.png?text=No+Image',
+    image: item.urlToImage || 'https://placehold.co/345x240?text=No+Image',
     publishedAt: new Date(item.publishedAt),
     source: item.source?.name || 'Source 1',
   });
@@ -25,7 +25,7 @@ const Display = () => {
     description: item.description,
     content: item.content,
     url: item.url,
-    image: item.image || 'https://via.placeholder.com/345x240.png?text=No+Image',
+    image: item.image || 'https://placehold.co/345x240?text=No+Image',
     publishedAt: new Date(item.publishedAt),
     source: item.source?.name || 'Source 2',
   });
@@ -35,7 +35,7 @@ const Display = () => {
     description: item.description,
     content: item.content,
     url: item.url,
-    image: item.image || 'https://via.placeholder.com/345x240.png?text=No+Image',
+    image: item.image || 'https://placehold.co/345x240?text=No+Image',
     publishedAt: new Date(item.publishedAt),
     source: item.name,
   });
@@ -87,17 +87,6 @@ const Display = () => {
   }, []);
 
 
-  //useEffect(()=>{},[]) to maintain bulk users
-      useEffect(()=>{
-        
-          //axios.get("url").then((res)=>{}).catch()
-          axios.get("https://newsapi.org/v2/everything?q=news&sortBy=publishedAt&pageSize=20&language=en&apiKey=954c3723dea74bdcbb55ab18866a3274")
-          .then((res)=>{
-              console.log(res.data.articles.length)
-              setArticles(res.data.articles)
-          }).catch((err) => console.log(err))
-      },[])
-  
       const handleOpen = (articles) => {
       setSelectedArticle(articles);
       setOpen(true);
@@ -118,7 +107,11 @@ const Display = () => {
             
              <Card className="newscard" sx={{ maxWidth: 345 }}>
 
-              <CardMedia sx={{ height: 240 }} image={val.image} title={val.title} />
+              <CardMedia
+  sx={{ height: 240 }}
+  image={val.image || 'https://placehold.co/345x240?text=No+Image'}
+  title={val.title}
+/>
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
                   {val.title}
