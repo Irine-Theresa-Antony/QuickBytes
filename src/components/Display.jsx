@@ -115,13 +115,8 @@ const Display = () => {
       <Grid container spacing={2} justifyContent="center">
         {articles.map((val, i) => (
           <Grid item xs={12} sm={6} md={4} key={i} className="grid-item">
-            <Card className="newscard" sx={{ maxWidth: 345,borderRadius: 3,
-                          boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
-                          margin: 'auto',
-                         backgroundColor: '#fff',
-                         height: 450, display: 'flex', flexDirection: 'column', justifyContent: 'space-between'  }}>
-
-            <Card className="newscard" sx={{ maxWidth: 345 }}>
+            
+             <Card className="newscard" sx={{ maxWidth: 345 }}>
 
               <CardMedia sx={{ height: 240 }} image={val.image} title={val.title} />
               <CardContent>

@@ -4,10 +4,9 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 import Admin from './components/Admin'
-import Navbar from './components/Navbar'
+
 
 import { Route, Routes } from 'react-router-dom'
-import Display from './Components/Display'
 
 
 import SignUp from './components/SignUp'
@@ -18,6 +17,8 @@ import Terms from './components/Terms'
 import Complaints from './components/Complaints'
 import Profile from './components/Profile'
 import Custom from './components/Custom'
+import Display from './Components/Display'
+import Navbar from './Components/Navbar'
 
 
 
