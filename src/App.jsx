@@ -3,10 +3,10 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-import Admin from './components/Admin'
 
 
 import { Route, Routes } from 'react-router-dom'
+import Admin from './Components/Admin'
 
 
 import SignUp from './components/SignUp'
@@ -32,6 +32,10 @@ function App() {
     <>
 
 
+     
+
+     
+
   
      <Navbar setCategory={setCategory} setCountry={setCountry}/>
      <Routes>
@@ -44,9 +48,11 @@ function App() {
      <Route path='/c' element={<Custom/>}></Route>
       <Route path='/signup' element={<SignUp/>}></Route>
      <Route path='/login'element={<Login/>}></Route>
-
+      <Route path='/admin' element={<Admin/>}></Route>
      </Routes>
      
+
+
 
     </>
   )
