@@ -1,11 +1,14 @@
 
 
-import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material';
+
+import { Button, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 const Display = () => {
   const [articles, setArticles] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState(null);
 
   const normalizeApi1 = (item) => ({
     title: item.title,
@@ -83,12 +86,43 @@ const Display = () => {
     fetchNews();
   }, []);
 
+
+  //useEffect(()=>{},[]) to maintain bulk users
+      useEffect(()=>{
+        
+          //axios.get("url").then((res)=>{}).catch()
+          axios.get("https://newsapi.org/v2/everything?q=news&sortBy=publishedAt&pageSize=20&language=en&apiKey=954c3723dea74bdcbb55ab18866a3274")
+          .then((res)=>{
+              console.log(res.data.articles.length)
+              setArticles(res.data.articles)
+          }).catch((err) => console.log(err))
+      },[])
+  
+      const handleOpen = (articles) => {
+      setSelectedArticle(articles);
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+      setSelectedArticle(null);
+    };
+  
+
+
   return (
     <div className="box">
       <Grid container spacing={2} justifyContent="center">
         {articles.map((val, i) => (
           <Grid item xs={12} sm={6} md={4} key={i} className="grid-item">
+            <Card className="newscard" sx={{ maxWidth: 345,borderRadius: 3,
+                          boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
+                          margin: 'auto',
+                         backgroundColor: '#fff',
+                         height: 450, display: 'flex', flexDirection: 'column', justifyContent: 'space-between'  }}>
+
             <Card className="newscard" sx={{ maxWidth: 345 }}>
+
               <CardMedia sx={{ height: 240 }} image={val.image} title={val.title} />
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
@@ -116,14 +150,42 @@ const Display = () => {
                 >
                   Share
                 </Button>
-                <Button size="small" href={val.url} target="_blank" rel="noopener noreferrer">
-                  Learn More
+                <Button size="small" onClick={() => handleOpen(val)}>
+                 Learn More
+                
                 </Button>
               </CardActions>
             </Card>
           </Grid>
         ))}
       </Grid>
+
+      {/* Dialog for full article */}
+            {selectedArticle && (
+              <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+                <DialogTitle>{selectedArticle.title}</DialogTitle>
+                <DialogContent>
+                  <Typography gutterBottom variant="body2" component="div">
+                    {new Date(selectedArticle.publishedAt).toLocaleString()}
+                  </Typography>
+                  <Typography variant="body1">
+                    {selectedArticle.description || "No description available."}
+                  </Typography>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Close</Button>
+                  <Button
+                    variant="contained"
+                    href={selectedArticle.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Go to Source
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            )}
+
     </div>
   );
 };
