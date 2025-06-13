@@ -8,6 +8,7 @@ import axios from 'axios';
 const DashboardPage = () => {
   const [note, setNote] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [review, setReview] = useState('');
 
   const handleNoteSubmit = (e) => {
     e.preventDefault();
@@ -17,7 +18,6 @@ const DashboardPage = () => {
       return;
     }
 
-    
     const dateOnly = selectedDate.toISOString().split('T')[0];
 
     const input = {
@@ -38,6 +38,31 @@ const DashboardPage = () => {
       });
   };
 
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+
+    if (review.trim() === '') {
+      alert('Please write a review before submitting.');
+      return;
+    }
+
+    const input = {
+      review: review,
+    };
+
+    axios
+      .post('http://localhost:3000/reviews', input)
+      .then((res) => {
+        console.log(res);
+        alert(res.data);
+        setReview('');
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('Error submitting review. Please try again.');
+      });
+  };
+
   return (
     <div className="dashboard-container">
 
@@ -50,26 +75,46 @@ const DashboardPage = () => {
         <button>
           <Link to="/complaints">COMPLAINTS</Link>
         </button>
-        <button>CONTACT INFO</button>
+        <button>
+          <Link to="/reviews">REVIEWS</Link>
+        </button>
         <button>
           <Link to="/terms">TERMS AND CONDITIONS</Link>
         </button>
       </div>
 
       {/* Main Area */}
-      <div className="main-content">
-        {/* Note Input */}
-        <div className="note-box">
-          <h3>📝 <strong>Write Your Note</strong></h3>
-          <form onSubmit={handleNoteSubmit}>
-            <textarea
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              placeholder="Type your note here..."
-            />
-            <br />
-            <button type="submit">Submit</button>
-          </form>
+      <div className="main-content-with-review">
+        <div className="left-column">
+          {/* Note Input */}
+          <div className="note-box">
+            <h3><strong>Write Your Notes</strong></h3>
+            <form onSubmit={handleNoteSubmit}>
+              <textarea
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                placeholder="Type your notes here..."
+              />
+              <div className="note-submit-container">
+                <button type="submit">Save</button>
+              </div>
+            </form>
+          </div>
+
+          {/* Review Input */}
+          <div className="review-box">
+            <h3><strong>Write a Review</strong></h3>
+            <form onSubmit={handleReviewSubmit}>
+              <textarea
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+                placeholder="Type your review here..."
+              />
+              <div className="review-submit-container">
+                <button type="submit">Save</button>
+              </div>
+            </form>
+          </div>
         </div>
 
         {/* Calendar */}
