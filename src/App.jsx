@@ -15,6 +15,8 @@ import Terms from './components/Terms'
 import Complaints from './components/Complaints'
 import Profile from './components/Profile'
 import Custom from './components/Custom'
+import Addtomarket from './components/Addtomarket'
+import Market from './components/Market'
 
 
 
@@ -27,15 +29,17 @@ function App() {
 
      <Navbar/>
      <Routes>
-     <Route path='/' element={<Display/>}></Route>
+     <Route path='/home' element={<Display/>}></Route>
      <Route path='/r' element={<DashboardPage/>}></Route>
      <Route path='/terms' element={<Terms/>}></Route>
      <Route path='/complaints' element={<Complaints/>}></Route>
      <Route path='/profile' element={<Profile/>}></Route>
      <Route path='/admin' element={<Admin/>}></Route>
      <Route path='/c' element={<Custom/>}></Route>
-      <Route path='/signup' element={<SignUp/>}></Route>
+     <Route path='/signup' element={<SignUp/>}></Route>
      <Route path='/login'element={<Login/>}></Route>
+     <Route path='/addtomarket'element={<Addtomarket/>}></Route>
+     <Route path='/market'element={<Market/>}></Route>
      </Routes>
      
 
