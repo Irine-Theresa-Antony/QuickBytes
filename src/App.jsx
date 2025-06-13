@@ -14,6 +14,7 @@ import Navbar from './Components/Navbar'
 import Display from './components/Display'
 import Admin from './components/Admin'
 import Viewcustom from './Components/Viewcustom'
+import UserView from './Components/UserView'
 
 
 
@@ -46,6 +47,7 @@ function App() {
      <Route path='/login'element={<Login/>}></Route>
       <Route path='/admin' element={<Admin/>}></Route>
       <Route path='/viewcustom' element={<Viewcustom/>}></Route>
+      <Route path='/viewuser' element={<UserView/>}></Route>
      </Routes>
      
 
