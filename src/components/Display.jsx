@@ -1,21 +1,25 @@
 
 
 
-import { Button, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const Display = () => {
   const [articles, setArticles] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const [search, setSearch] = useState('');
+  const [likedArticles, setLikedArticles] = useState([]);
+  const [showLikedOnly, setShowLikedOnly] = useState([]);
 
   const normalizeApi1 = (item) => ({
     title: item.title,
     description: item.description,
     content: item.content,
     url: item.url,
-    image: item.urlToImage || 'https://via.placeholder.com/345x240.png?text=No+Image',
+    image: item.urlToImage || 'https://placehold.co/345x240?text=No+Image',
     publishedAt: new Date(item.publishedAt),
     source: item.source?.name || 'Source 1',
   });
@@ -25,7 +29,7 @@ const Display = () => {
     description: item.description,
     content: item.content,
     url: item.url,
-    image: item.image || 'https://via.placeholder.com/345x240.png?text=No+Image',
+    image: item.image || 'https://placehold.co/345x240?text=No+Image',
     publishedAt: new Date(item.publishedAt),
     source: item.source?.name || 'Source 2',
   });
@@ -35,7 +39,7 @@ const Display = () => {
     description: item.description,
     content: item.content,
     url: item.url,
-    image: item.image || 'https://via.placeholder.com/345x240.png?text=No+Image',
+    image: item.image || 'https://placehold.co/345x240?text=No+Image',
     publishedAt: new Date(item.publishedAt),
     source: item.name,
   });
@@ -89,15 +93,15 @@ const Display = () => {
 
   //useEffect(()=>{},[]) to maintain bulk users
       useEffect(()=>{
-        
           //axios.get("url").then((res)=>{}).catch()
-          axios.get("https://newsapi.org/v2/everything?q=news&sortBy=publishedAt&pageSize=20&language=en&apiKey=954c3723dea74bdcbb55ab18866a3274")
+          axios.get(`https://newsapi.org/v2/everything?q=${search}&q=news&sortBy=publishedAt&pageSize=20&language=en&apiKey=954c3723dea74bdcbb55ab18866a3274`)
           .then((res)=>{
               console.log(res.data.articles.length)
               setArticles(res.data.articles)
           }).catch((err) => console.log(err))
       },[])
   
+
       const handleOpen = (articles) => {
       setSelectedArticle(articles);
       setOpen(true);
@@ -108,6 +112,19 @@ const Display = () => {
       setSelectedArticle(null);
     };
   
+    const toggleLike = (articles) => {
+    const isLiked = Array.isArray(likedArticles) && likedArticles.some((a) => a.url === articles.url);
+
+    if (isLiked) {
+      setLikedArticles(likedArticles.filter((a) => a.url !== articles.url));
+    } else {
+      setLikedArticles([...likedArticles, articles]);
+    }
+  };
+  const isLiked = (articles) =>
+  Array.isArray(likedArticles) &&
+  likedArticles.some((a) => a.url === articles.url);
+  const displayedArticles = showLikedOnly ? likedArticles : articles;
 
 
   return (
@@ -118,7 +135,11 @@ const Display = () => {
             
              <Card className="newscard" sx={{ maxWidth: 345 }}>
 
-              <CardMedia sx={{ height: 240 }} image={val.image} title={val.title} />
+              <CardMedia
+  sx={{ height: 240 }}
+  image={val.image || 'https://placehold.co/345x240?text=No+Image'}
+  title={val.title}
+/>
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
                   {val.title}
@@ -130,7 +151,7 @@ const Display = () => {
                   {val.description}
                 </Typography>
               </CardContent>
-              <CardActions>
+              <CardActions >
                 <Button
                   size="small"
                   onClick={() =>
@@ -145,10 +166,15 @@ const Display = () => {
                 >
                   Share
                 </Button>
-                <Button size="small" onClick={() => handleOpen(val)}>
+                <Button size="small" sx={{ mr: 13 }} onClick={() => handleOpen(val)}>
                  Learn More
                 
-                </Button>
+                </Button >
+
+                 {/*  Like Button */}
+                <IconButton onClick={() => toggleLike(val)} >
+                  <FavoriteIcon color={isLiked(val) ? 'error' : 'disabled'}/>
+                </IconButton>
               </CardActions>
             </Card>
           </Grid>
@@ -164,7 +190,7 @@ const Display = () => {
                     {new Date(selectedArticle.publishedAt).toLocaleString()}
                   </Typography>
                   <Typography variant="body1">
-                    {selectedArticle.description || "No description available."}
+                    {selectedArticle.content || "No content available."}
                   </Typography>
                 </DialogContent>
                 <DialogActions>

@@ -34,6 +34,7 @@ const Custom = () => {
         .put(`http://localhost:3000/cupdate/${location.state.val._id}`, input)
         .then((res) => {
           alert(res.data);
+          window.location.reload()
           navigate('/')
         })
         .catch((err) => {
