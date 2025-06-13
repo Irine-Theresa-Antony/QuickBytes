@@ -2,23 +2,18 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-
-import Admin from './components/Admin'
-
-
 import { Route, Routes } from 'react-router-dom'
-
-
 import SignUp from './components/SignUp'
 import Login from './components/Login'
-
 import DashboardPage from './components/DashboardPage'
 import Terms from './components/Terms'
 import Complaints from './components/Complaints'
 import Profile from './components/Profile'
 import Custom from './components/Custom'
-import Display from './Components/Display'
 import Navbar from './Components/Navbar'
+import Display from './components/Display'
+import Admin from './components/Admin'
+import Viewcustom from './Components/Viewcustom'
 
 
 
@@ -36,6 +31,7 @@ function App() {
     <>
 
 
+
   
      <Navbar setCategory={setCategory} setCountry={setCountry} setSearch={setSearch} setShowLikedOnly={setShowLikedOnly}/>
      <Routes>
@@ -45,13 +41,15 @@ function App() {
      <Route path='/terms' element={<Terms/>}></Route>
      <Route path='/complaints' element={<Complaints/>}></Route>
      <Route path='/profile' element={<Profile/>}></Route>
-     <Route path='/admin' element={<Admin/>}></Route>
      <Route path='/c' element={<Custom/>}></Route>
       <Route path='/signup' element={<SignUp/>}></Route>
      <Route path='/login'element={<Login/>}></Route>
-
+      <Route path='/admin' element={<Admin/>}></Route>
+      <Route path='/viewcustom' element={<Viewcustom/>}></Route>
      </Routes>
      
+
+
 
     </>
   )
