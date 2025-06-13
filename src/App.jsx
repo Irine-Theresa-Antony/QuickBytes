@@ -9,6 +9,7 @@ import Display from './components/Display'
 import DashboardPage from './components/DashboardPage'
 import Terms from './components/Terms'
 import Complaints from './components/Complaints'
+import Review from './components/Review'
 import Profile from './components/Profile'
 import Custom from './components/Custom'
 
@@ -28,7 +29,7 @@ function App() {
      <Route path='/terms' element={<Terms/>}></Route>
      <Route path='/complaints' element={<Complaints/>}></Route>
      <Route path='/profile' element={<Profile/>}></Route>
-
+     <Route path='/reviews' element={<Review/>}></Route>
      <Route path='/admin' element={<Admin/>}></Route>
      <Route path='/c' element={<Custom/>}></Route>
 
