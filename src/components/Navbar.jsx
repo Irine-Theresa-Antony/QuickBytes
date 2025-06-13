@@ -1,12 +1,14 @@
-import { AppBar,Box, Button, IconButton, Toolbar, Typography,Menu, MenuItem } from '@mui/material'
+import { AppBar,Box, Button, IconButton, Toolbar, Typography,Menu, MenuItem, InputBase, Drawer, List, ListItem, ListItemText } from '@mui/material'
 import React, { useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
+import SearchIcon from '@mui/icons-material/Search';
 
-const Navbar = ({ setCategory ,setCountry}) => {
+
+const Navbar = ({ setCategory ,setCountry,setSearch,setShowLikedOnly}) => {
   const [anchorEl, setAnchorEl] = useState(null); // for category button
   const categories = ['general', 'technology', 'sports', 'health', 'business', 'science', 'entertainment'];
-
+  const [leftMenuOpen, setLeftMenuOpen] = useState(false);
   const [anchorCountryEl, setAnchorCountryEl] = useState(null);
   const countries = [
       { code: 'us', name: 'United States' },
@@ -38,6 +40,12 @@ const Navbar = ({ setCategory ,setCountry}) => {
     if (code) setCountry(code);
   };
 
+  const [searchInput, setSearchInput] = useState('');
+  const handleSearchKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      setSearch(searchInput); // pass search term to parent
+    }
+  };
 
   return (
     <div>
@@ -50,6 +58,7 @@ const Navbar = ({ setCategory ,setCountry}) => {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={() => setLeftMenuOpen(true)} // <-- open menu
           >
             <MenuIcon />
           </IconButton>
@@ -57,6 +66,19 @@ const Navbar = ({ setCategory ,setCountry}) => {
             QuickBytes
           </Typography>
 
+           {/* Search Bar */}
+          <Box sx={{ display: 'flex', alignItems: 'center', backgroundColor: 'white', borderRadius: 1, px: 1 }}>
+            <InputBase
+              placeholder="Search…"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
+              sx={{ ml: 1, flex: 1 }}
+            />
+            <SearchIcon sx={{ color: 'gray' }} />
+          </Box>
+
+            
            {/*  Category Filter Button */}
             <Button color="inherit" onClick={handleCategoryClick}>
             Category
@@ -70,8 +92,7 @@ const Navbar = ({ setCategory ,setCountry}) => {
           <Button color="inherit">
             Login
           </Button>
-
-             
+              
            <Button color="inherit"> <Link to ={'/r'} style={{color:"white"}}>dashboard</Link> </Button>
 
             
@@ -96,7 +117,17 @@ const Navbar = ({ setCategory ,setCountry}) => {
           </MenuItem>
         ))}
       </Menu>
-
+     {/*  */}
+     <Drawer anchor="left" open={leftMenuOpen} onClose={() => setLeftMenuOpen(false)}>
+    <List>
+    <ListItem button onClick={() => {
+      setShowLikedOnly(prev => !prev);
+      setLeftMenuOpen(false);
+    }}>
+      <ListItemText primary="Show Liked News" />
+    </ListItem>
+  </List>
+</Drawer>
     </Box>
     </div>
   )

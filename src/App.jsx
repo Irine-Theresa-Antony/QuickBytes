@@ -22,13 +22,21 @@ function App() {
   const [count, setCount] = useState(0)
   const [category, setCategory] = useState('general'); // State to manage selected category
   const [country, setCountry] = useState('us'); // Default country
+  const [search, setSearch] = useState('');
+  const [likedArticles, setLikedArticles] = useState([]);
+  const [showLikedOnly, setShowLikedOnly] = useState(false);
+  
 
   return (
     <>
 
-     <Navbar setCategory={setCategory} setCountry={setCountry}/>
+
+
+  
+     <Navbar setCategory={setCategory} setCountry={setCountry} setSearch={setSearch} setShowLikedOnly={setShowLikedOnly}/>
      <Routes>
-     <Route path='/' element={<Display category={category}/>}></Route>
+     <Route path='/' element={<Display category={category} country={country} search={search} showLikedOnly={showLikedOnly}
+       likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>}></Route>
      <Route path='/r' element={<DashboardPage/>}></Route>
      <Route path='/terms' element={<Terms/>}></Route>
      <Route path='/complaints' element={<Complaints/>}></Route>
