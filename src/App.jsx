@@ -13,9 +13,10 @@ import Profile from './components/Profile'
 import Custom from './components/Custom'
 import Navbar from './Components/Navbar'
 import Display from './components/Display'
-import Admin from './components/Admin'
 import Viewcustom from './Components/Viewcustom'
 import UserView from './Components/UserView'
+import Admin from './Components/Admin'
+import UserCompTab from './Components/UserCompTab'
 
 
 
@@ -43,12 +44,13 @@ function App() {
      <Route path='/terms' element={<Terms/>}></Route>
      <Route path='/complaints' element={<Complaints/>}></Route>
      <Route path='/profile' element={<Profile/>}></Route>
-
+      
      <Route path='/reviews' element={<Review/>}></Route>
      <Route path='/c' element={<Custom/>}></Route>
       <Route path='/signup' element={<SignUp/>}></Route>
      <Route path='/login'element={<Login/>}></Route>
       <Route path='/admin' element={<Admin/>}></Route>
+      <Route path='/admin/usercomp' element={<UserCompTab/>}></Route>
       <Route path='/viewcustom' element={<Viewcustom/>}></Route>
       <Route path='/viewuser' element={<UserView/>}></Route>
      </Routes>
