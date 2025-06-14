@@ -18,6 +18,7 @@ import {
   TableRow,
   Paper,
   CircularProgress,
+  Typography,
 } from '@mui/material';
 
 import {
@@ -31,37 +32,23 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material'
-
-import React from 'react'
-import { useState } from 'react';
 import { Link,Route } from 'react-router-dom';
-
+import axios from 'axios';
 
 const drawerWidth = 240;
 
 const Admin = () => {
+  
   const [activeTab, setActiveTab] = useState('totalUsers');
-  const [totalUsers, setTotalUsers] = useState(1250);
-  const [monthlyUsers, setMonthlyUsers] = useState([
-    { month: 'Jan', users: 100 },
-    { month: 'Feb', users: 150 },
-    { month: 'Mar', users: 200 },
-    { month: 'Apr', users: 180 },
-    { month: 'May', users: 220 },
-    { month: 'Jun', users: 250 },
-    { month: 'Jul', users: 300 },
-    { month: 'Aug', users: 350 },
-    { month: 'Sep', users: 400 },
-    { month: 'Oct', users: 450 },
-    { month: 'Nov', users: 500 },
-    { month: 'Dec', users: 550 },
-  ]);
-
-  const [complaints, setComplaints] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [monthlyUsers, setMonthlyUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [complaints, setComplaints] = useState([]);
+  const [newUsers, setNewUsers] = useState([]);
 
+
+  
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
       case 'pending':
@@ -75,114 +62,164 @@ const Admin = () => {
     }
   };
 
+  // Fetch user data based on active tab
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        if (activeTab === 'totalUsers') {
+          const countResponse = await axios.get('http://localhost:3000/count');
+          setTotalUsers(countResponse.data.count);
+          
+          const monthlyResponse = await axios.get('http://localhost:3000/monthly-growth');
+          setMonthlyUsers(monthlyResponse.data);
+        } 
+        else if (activeTab === 'newUsers') {
+          const recentUsersResponse = await axios.get('http://localhost:3000/recent-users');
+          setNewUsers(recentUsersResponse.data);
+        }
+      } catch (err) {
+        setError(err.response?.data?.message || err.message || 'Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [activeTab]);
+
+
+ // Format date to display "Today" or "Yesterday"
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    if (date.toDateString() === today.toDateString()) {
+      return 'Today';
+    } else if (date.toDateString() === yesterday.toDateString()) {
+      return 'Yesterday';
+    } else {
+      return date.toLocaleDateString();
+    }
+  };
+
+
+   
+   // Helper function to calculate growth rate
+  const calculateGrowthRate = () => {
+    if (monthlyUsers.length < 2) return 0;
+    const current = monthlyUsers[monthlyUsers.length - 1].count;
+    const previous = monthlyUsers[monthlyUsers.length - 2].count;
+    return (((current - previous) / previous) * 100).toFixed(1);
+  };
+
+
+
   const renderContent = () => {
-    switch (activeTab) {
+     switch (activeTab) {
       case 'totalUsers':
         return (
           <Box p={3}>
-            <h2>User Statistics</h2>
-            <Box
-              sx={{
-                backgroundColor: '#f5f5f5',
-                padding: '20px',
-                borderRadius: '8px',
-                marginBottom: '20px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <Box>
-                <h3>Total Users</h3>
-                <p style={{ fontSize: '24px', fontWeight: 'bold' }}>{totalUsers}</p>
-              </Box>
-              <Box
-                sx={{
-                  backgroundColor: '#e3f2fd',
-                  padding: '10px 20px',
-                  borderRadius: '8px',
-                  color: '#1976d2',
-                }}
-              >
-                <p>+12% from last month</p>
-              </Box>
-            </Box>
-
-            <h3>Monthly User Growth</h3>
-            <Box height="400px" mt={3}>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={monthlyUsers}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="users" fill="#1976D2" name="Number of Users" />
-                </BarChart>
-              </ResponsiveContainer>
-            </Box>
-          </Box>
-        );
-      case 'newUsers':
-        return <Box p={3}>New Users Content</Box>;
-      case 'userComplaints':
-        return (
-          <Box p={3}>
-            <h2>User Complaints</h2>
+            <Typography variant="h4" gutterBottom>User Statistics</Typography>
+            
             {loading ? (
-              <Box display="flex" justifyContent="center" mt={6}>
+              <Box display="flex" justifyContent="center">
                 <CircularProgress />
               </Box>
             ) : error ? (
-              <Box color="red" p={2}>
-                {error}
-              </Box>
+              <Typography color="error">{error}</Typography>
+            ) : (
+              <>
+                <Box sx={{
+                  backgroundColor: '#f5f5f5',
+                  p: 3,
+                  borderRadius: 2,
+                  mb: 3,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                  <Box>
+                    <Typography variant="h6">Total Users</Typography>
+                    <Typography variant="h3" fontWeight="bold">{totalUsers}</Typography>
+                  </Box>
+                  <Box sx={{
+                    backgroundColor: '#e3f2fd',
+                    p: '10px 20px',
+                    borderRadius: 1,
+                    color: '#1976d2'
+                  }}>
+                    <Typography>
+                      {monthlyUsers.length > 1 ? 
+                        `+${calculateGrowthRate()}% from last month` : 
+                        'No growth data available'}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <Typography variant="h5" gutterBottom>Monthly User Growth</Typography>
+                <Box height={400} mt={3}>
+                  {monthlyUsers.length > 0 ? (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={monthlyUsers}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="count" fill="#1976D2" name="New Users" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <Typography>No monthly data available</Typography>
+                  )}
+                </Box>
+              </>
+            )}
+          </Box>
+        );
+
+      
+    
+      case 'newUsers':
+        return (
+          <Box p={3}>
+            <Typography variant="h4" gutterBottom>New Users</Typography>
+            
+            {loading ? (
+              <CircularProgress />
+            ) : error ? (
+              <Typography color="error">{error}</Typography>
             ) : (
               <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="complaints table">
+                <Table>
                   <TableHead>
-                    <TableRow sx={{ backgroundColor: '#1976D2' }}>
-                      <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>ID</TableCell>
-                      <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>User</TableCell>
-                      <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Subject</TableCell>
-                      <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Description</TableCell>
-                      <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Date</TableCell>
-                      <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Status</TableCell>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Email</TableCell>
+                      <TableCell>Joined</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {complaints.length > 0 ? (
-                      complaints.map((complaint) => (
-                        <TableRow key={complaint._id}>
-                          <TableCell>{complaint._id}</TableCell>
-                          <TableCell>{complaint.userName || complaint.userEmail}</TableCell>
-                          <TableCell>{complaint.subject}</TableCell>
+                    {newUsers.length > 0 ? (
+                      newUsers.map((user) => (
+                        <TableRow key={user._id}>
+                          <TableCell>{user.Name}</TableCell>                          
+                          <TableCell>{user.Email}</TableCell>
                           <TableCell>
-                            {complaint.description.length > 50
-                              ? `${complaint.description.substring(0, 50)}...`
-                              : complaint.description}
-                          </TableCell>
-                          <TableCell>
-                            {new Date(complaint.createdAt).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell>
-                            <span
-                              style={{
-                                padding: '5px 10px',
-                                borderRadius: '12px',
-                                backgroundColor: getStatusColor(complaint.status),
-                                color: 'white',
-                              }}
-                            >
-                              {complaint.status}
-                            </span>
+                            {formatDate(user.createdAt)}
+                            <Typography variant="caption" display="block" color="textSecondary">
+                              {new Date(user.createdAt).toLocaleTimeString()}
+                            </Typography>
                           </TableCell>
                         </TableRow>
                       ))
                     ) : (
                       <TableRow>
-                        <TableCell colSpan={6} align="center">
-                          No complaints found
+                        <TableCell colSpan={4} align="center">
+                          No new users found
                         </TableCell>
                       </TableRow>
                     )}
@@ -192,12 +229,24 @@ const Admin = () => {
             )}
           </Box>
         );
+
+
+      case 'userComplaints':
+        return (
+          <Box p={3}>
+              
+            <Link to='/admin/usercomp' />
+
+          </Box>
+        );
       case 'users':
         return <Box p={3}>Users List Content</Box>;
       default:
         return <Box p={3}>Select a tab</Box>;
     }
   };
+
+
 
   return (
     <Box display="flex" height="100vh" fontFamily="Arial, sans-serif">
@@ -237,17 +286,19 @@ const Admin = () => {
         >
           New Users
         </Button>
+
         <Button
-          variant="contained"
-          onClick={() => setActiveTab('userComplaints')}
-          sx={{
-            backgroundColor: activeTab === 'userComplaints' ? '#0d47a1' : '#2196f3',
-            textAlign: 'left',
-            '&:hover': { backgroundColor: '#0d47a1' },
-          }}
-          fullWidth
-        >
-          User Complaints
+        variant="contained"
+        sx={{
+          backgroundColor: '#2196f3',
+          textAlign: 'left',
+          '&:hover': { backgroundColor: '#0d47a1' },
+        }}
+        fullWidth
+      >
+        <Link to="/admin/usercomp" style={{ color: 'white', textDecoration: 'none', width: '100%' }}>
+         User Complaints
+        </Link>
         </Button>
         
         <Button
