@@ -18,22 +18,22 @@ const Profile = () => {
   const [profileId, setProfileId] = useState(null);
 
  
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await axios.get('http://localhost:3000/profile');
-        if (res.data) {
-          setFormData(res.data);
-          setProfileId(res.data._id);
-        }
-      } catch (err) {
-        console.error(err);
-        alert('Error fetching profile');
-      }
-    };
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     try {
+  //       const res = await axios.get('http://localhost:3000/profile');
+  //       if (res.data) {
+  //         setFormData(res.data);
+  //         setProfileId(res.data._id);
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //       alert('Error fetching profile');
+  //     }
+  //   };
 
-    fetchProfile();
-  }, []);
+  //   fetchProfile();
+  // }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -79,7 +79,7 @@ const Profile = () => {
         <textarea name="bio" placeholder="Short Bio" value={formData.bio} onChange={handleChange} rows="3" />
         <div className="profile-buttons">
           <button onClick={handleSave}>Save</button>
-          <button onClick={handleUpdate}>Update</button>
+          {/* <button onClick={handleUpdate}>Update</button> */}
         </div>
       </div>
     </div>

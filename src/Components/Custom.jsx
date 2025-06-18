@@ -1,16 +1,56 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Custom = () => {
-    var [input, setinput]=useState({title:"",des:"",content:"",url:"",link:"",datetime:"",name:""});
+    var [input, setinput]=useState({title:"",description:"",content:"",url:"",image:"",publishedAt:"",name:""});
+    var location=useLocation();
+  var navigate=useNavigate();
+
 
     const inputhandler=(e)=>{
           setinput({...input,[e.target.name]:e.target.value});
           console.log(input);
       }
+    
+    useEffect(()=>{
+        if(location.state!==null)
+              setinput({...input,
+            title:location.state.val.title,
+            description:location.state.val.description,
+            content:location.state.val.content,
+            url:location.state.val.url,
+            image:location.state.val.image,
+           publishedAt:location.state.val.publishedAt,
+            name:location.state.val.name,
+            })
+      },[])
 
       const submitHandler = () => {
     console.log("btn clicked");
+    if (location.state !== null) {
+      axios
+        .put(`http://localhost:3000/cupdate/${location.state.val._id}`, input)
+        .then((res) => {
+          alert(res.data);
+          window.location.reload()
+          navigate('/')
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      axios
+        .post("http://localhost:3000/addcustom", input)
+        .then((res) => {
+          alert(res.data);
+           navigate('/')
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
 }
 
   return (
@@ -38,7 +78,7 @@ const Custom = () => {
     <Typography variant='h6' sx={{  textAlign: 'left' }}>Description Of The News:</Typography>
     
     
-    <TextField variant='outlined' label='description' fullWidth sx={{ mt: 2 }} onChange={inputhandler} name='des' value={input.des} ></TextField>
+    <TextField variant='outlined' label='description' fullWidth sx={{ mt: 2 }} onChange={inputhandler} name='description' value={input.description} ></TextField>
     <br/><br/>
     <Typography variant='h6' sx={{  textAlign: 'left' }}>Content Of The News:</Typography>
     
@@ -56,14 +96,14 @@ const Custom = () => {
     <Typography variant='h6' sx={{  textAlign: 'left' }}>Image Of The News:</Typography>
     
     
-    <TextField variant='outlined' label='link' fullWidth sx={{ mt: 2 }} onChange={inputhandler} name='link' value={input.link}></TextField>
+    <TextField variant='outlined' label='link' fullWidth sx={{ mt: 2 }} onChange={inputhandler} name='image' value={input.image}></TextField>
     <br/>
     <br/>
 
     <Typography variant='h6'sx={{  textAlign: 'left' }}>Published At:</Typography>
     
     
-    <TextField variant='outlined' label='date & time' fullWidth sx={{ mt: 2 }} onChange={inputhandler} name='datetime' value={input.datetime}></TextField>
+    <TextField variant='outlined' label='date & time' fullWidth sx={{ mt: 2 }} onChange={inputhandler} name='publishedAt' value={input.publishedAt}></TextField>
     <br/>
     <br/>
 
