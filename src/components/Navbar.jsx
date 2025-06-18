@@ -60,12 +60,7 @@ const Navbar = ({ setCategory ,setCountry,setSearch,setShowLikedOnly}) => {
             sx={{ mr: 2 }}
             onClick={() => setLeftMenuOpen(true)} // <-- open menu
           >
-            <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            QuickBytes
-          </Typography>
-
            {/* Search Bar */}
           <Box sx={{ display: 'flex', alignItems: 'center', backgroundColor: 'white', borderRadius: 1, px: 1 }}>
             <InputBase
@@ -88,14 +83,12 @@ const Navbar = ({ setCategory ,setCountry,setSearch,setShowLikedOnly}) => {
            {/*  Country Placeholder */}
             <Button color="inherit" onClick={handleCountryClick}>Country</Button>
             <br /><br />
-           {/*  Login */}
-          <Button color="inherit">
-            Login
-          </Button>
-              
-           <Button color="inherit"> <Link to ={'/r'} style={{color:"white"}}>dashboard</Link> </Button>
-
-            
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='left'>QuickBytes</Typography>
+          <Button color="inherit"> <Link to ={'/home'} style={{color:"white"}}>Home</Link> </Button> 
+          <Button color="inherit"> <Link to ={'/market'} style={{color:"white"}}>Market</Link> </Button>
+          <Button color="inherit">Chat</Button>
+          <Button color="inherit"> <Link to ={'/r'} style={{color:"white"}}>Dashboard</Link> </Button>
+          <Button color="inherit"><Link to ={'/login'} style={{color:"white"}}>Logout</Link></Button>
         </Toolbar>
       </AppBar>
 
