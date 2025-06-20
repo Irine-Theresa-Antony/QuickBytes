@@ -22,16 +22,6 @@ const Navbar = ({ setShowLikedOnly}) => {
             onClick={() => setLeftMenuOpen(true)} // <-- open menu
           >
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            QuickBytes
-          </Typography>
-            
-           {/*  Login */}
-          <Button color="inherit">
-            Login
-          </Button>
-              
-           <Button color="inherit"> <Link to ={'/r'} style={{color:"white"}}>dashboard</Link> </Button>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='left'>QuickBytes</Typography>
           <Button color="inherit"> <Link to ={'/home'} style={{color:"white"}}>Home</Link> </Button> 
           <Button color="inherit"> <Link to ={'/market'} style={{color:"white"}}>Market</Link> </Button>
