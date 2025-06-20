@@ -6,13 +6,16 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const Display = () => {
+const Display = ({showLikedOnly,
+  likedArticles,
+  setLikedArticles,
+  category,
+  country,
+  search }) => {
   const [articles, setArticles] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
-  const [search, setSearch] = useState('');
-  const [likedArticles, setLikedArticles] = useState([]);
-  const [showLikedOnly, setShowLikedOnly] = useState([]);
+  
 
   const normalizeApi1 = (item) => ({
     title: item.title,
@@ -92,14 +95,30 @@ const Display = () => {
 
 
   //useEffect(()=>{},[]) to maintain bulk users
-      useEffect(()=>{
-          //axios.get("url").then((res)=>{}).catch()
-          axios.get(`https://newsapi.org/v2/everything?q=${search}&q=news&sortBy=publishedAt&pageSize=20&language=en&apiKey=954c3723dea74bdcbb55ab18866a3274`)
-          .then((res)=>{
-              console.log(res.data.articles.length)
-              setArticles(res.data.articles)
-          }).catch((err) => console.log(err))
-      },[])
+      useEffect(() => {
+  const fetchNews = async () => {
+    try {
+      const res = await axios.get(
+        `https://newsapi.org/v2/top-headlines?q=${search || 'news'}&category=${category}&country=${country}&pageSize=20&language=en&apiKey=a0c2b9ff9b5b49e791d5745aeb32ad20`
+      );
+      let normalized = res.data.articles.map(normalizeApi1);
+
+      //  Filter titles that start with the search text (case-insensitive)
+      if (search) {
+        const lowerSearch = search.toLowerCase();
+        normalized = normalized.filter(article =>
+          article.title?.toLowerCase().startsWith(lowerSearch)
+        );
+      }
+
+      setArticles(normalized);
+    } catch (err) {
+      console.error('Error fetching news:', err);
+    }
+  };
+
+  fetchNews();
+}, [category, country, search]);
   
 
       const handleOpen = (articles) => {
@@ -113,14 +132,14 @@ const Display = () => {
     };
   
     const toggleLike = (articles) => {
-    const isLiked = Array.isArray(likedArticles) && likedArticles.some((a) => a.url === articles.url);
+   const alreadyLiked = likedArticles.find(a => a.title === articles.title);
 
-    if (isLiked) {
-      setLikedArticles(likedArticles.filter((a) => a.url !== articles.url));
-    } else {
-      setLikedArticles([...likedArticles, articles]);
-    }
-  };
+   if (alreadyLiked) {
+    setLikedArticles(prev => prev.filter(a => a.title !== articles.title));
+  } else {
+    setLikedArticles(prev => [...prev, articles]);
+  }
+};
   const isLiked = (articles) =>
   Array.isArray(likedArticles) &&
   likedArticles.some((a) => a.url === articles.url);
@@ -136,10 +155,10 @@ const Display = () => {
              <Card className="newscard" sx={{ maxWidth: 345 }}>
 
               <CardMedia
-  sx={{ height: 240 }}
-  image={val.image || 'https://placehold.co/345x240?text=No+Image'}
-  title={val.title}
-/>
+               sx={{ height: 240 }}
+               image={val.image || 'https://placehold.co/345x240?text=No+Image'}
+                title={val.title}
+                />
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
                   {val.title}

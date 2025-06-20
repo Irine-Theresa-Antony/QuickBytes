@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import SignUp from './components/SignUp'
 import Login from './components/Login'
 import DashboardPage from './components/DashboardPage'
@@ -16,6 +16,7 @@ import Market from './components/Market'
 import Navbar from './Components/Navbar'
 import Display from './components/Display'
 import Viewcustom from './Components/Viewcustom'
+import  Filter  from './Components/Filter'
 import UserView from './Components/UserView'
 import Admin from './Components/Admin'
 import UserCompTab from './Components/UserCompTab'
@@ -23,7 +24,9 @@ import UserCompTab from './Components/UserCompTab'
 
 
 
+
 function App() {
+  const location = useLocation();
   const [count, setCount] = useState(0)
   const [category, setCategory] = useState('general'); // State to manage selected category
   const [country, setCountry] = useState('us'); // Default country
@@ -38,10 +41,16 @@ function App() {
 
 
   
-     <Navbar setCategory={setCategory} setCountry={setCountry} setSearch={setSearch} setShowLikedOnly={setShowLikedOnly}/>
+     <Navbar setShowLikedOnly={setShowLikedOnly}/>
+     {location.pathname === '/' && (
+     <Filter
+     setCategory={setCategory}
+     setCountry={setCountry}
+     setSearch={setSearch}
+     />)}
      <Routes>
-     <Route path='/' element={<Display category={category} country={country} search={search} showLikedOnly={showLikedOnly}
-       likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>}></Route>
+     <Route path='/' element={<Display showLikedOnly={showLikedOnly} category={category}
+        country={country} search={search} likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>}></Route>
      <Route path='/r' element={<DashboardPage/>}></Route>
      <Route path='/terms' element={<Terms/>}></Route>
      <Route path='/complaints' element={<Complaints/>}></Route>
