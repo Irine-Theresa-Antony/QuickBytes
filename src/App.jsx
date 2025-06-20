@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import SignUp from './components/SignUp'
 import Login from './components/Login'
 import DashboardPage from './components/DashboardPage'
@@ -13,14 +12,12 @@ import Profile from './components/Profile'
 import Custom from './components/Custom'
 import Addtomarket from './components/Addtomarket'
 import Market from './components/Market'
-import Navbar from './Components/Navbar'
 import Display from './components/Display'
 import Admin from './components/Admin'
 import Viewcustom from './Components/Viewcustom'
 import UserView from './Components/UserView'
-
-
-
+import Navbar from './components/Navbar'
+import Message from './components/Message'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -29,15 +26,14 @@ function App() {
   const [search, setSearch] = useState('');
   const [likedArticles, setLikedArticles] = useState([]);
   const [showLikedOnly, setShowLikedOnly] = useState(false);
-  
+  const location = useLocation();
+
+  const hideNavbarRoutes=['/signup','/login'];
 
   return (
     <>
-
-
-
-  
-     <Navbar setCategory={setCategory} setCountry={setCountry} setSearch={setSearch} setShowLikedOnly={setShowLikedOnly}/>
+    {!hideNavbarRoutes.includes(location.pathname)&&(
+     <Navbar setCategory={setCategory} setCountry={setCountry} setSearch={setSearch} setShowLikedOnly={setShowLikedOnly}/>)}
      <Routes>
      <Route path='/' element={<Display category={category} country={country} search={search} showLikedOnly={showLikedOnly}
        likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>}></Route>
@@ -45,7 +41,6 @@ function App() {
      <Route path='/terms' element={<Terms/>}></Route>
      <Route path='/complaints' element={<Complaints/>}></Route>
      <Route path='/profile' element={<Profile/>}></Route>
-
      <Route path='/reviews' element={<Review/>}></Route>
      <Route path='/c' element={<Custom/>}></Route>
      <Route path='/signup' element={<SignUp/>}></Route>
@@ -55,11 +50,9 @@ function App() {
       <Route path='/viewuser' element={<UserView/>}></Route>
      <Route path='/addtomarket'element={<Addtomarket/>}></Route>
      <Route path='/market'element={<Market/>}></Route>
+     <Route path='/message'element={<Message/>}></Route>
      </Routes>
      
-
-
-
     </>
   )
 }

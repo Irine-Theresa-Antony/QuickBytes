@@ -14,9 +14,18 @@ const Login = () => {
       .post('http://localhost:3000/login', { email, password })
       .then((result) => {
         console.log(result)
-        if (result.data === "Success") {
-          navigate('/home')
-        }
+        if (result.data.status === "Success") {
+          localStorage.setItem("username", result.data.Name); 
+          if (email === "quickbytesadmin@gmail.com" && password === "quickbytesadmin") {
+            navigate('/admin');
+          } else {
+            navigate('/');
+          }
+        }else if (result.data.status === "User Not Exist") {
+        alert("User does not exist. Please sign up first.");
+      } else if (result.data.status === "Password Incorrect") {
+        alert("Incorrect password. Try again.");
+      }
       })
       .catch((err) => console.log(err))
   };
