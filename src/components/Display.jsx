@@ -1,14 +1,21 @@
 
 
 
-import { Button, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const Display = () => {
+const Display = ({showLikedOnly,
+  likedArticles,
+  setLikedArticles,
+  category,
+  country,
+  search }) => {
   const [articles, setArticles] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
+  
 
   const normalizeApi1 = (item) => ({
     title: item.title,
@@ -87,6 +94,33 @@ const Display = () => {
   }, []);
 
 
+  //useEffect(()=>{},[]) to maintain bulk users
+      useEffect(() => {
+  const fetchNews = async () => {
+    try {
+      const res = await axios.get(
+        `https://newsapi.org/v2/top-headlines?q=${search || 'news'}&category=${category}&country=${country}&pageSize=20&language=en&apiKey=a0c2b9ff9b5b49e791d5745aeb32ad20`
+      );
+      let normalized = res.data.articles.map(normalizeApi1);
+
+      //  Filter titles that start with the search text (case-insensitive)
+      if (search) {
+        const lowerSearch = search.toLowerCase();
+        normalized = normalized.filter(article =>
+          article.title?.toLowerCase().startsWith(lowerSearch)
+        );
+      }
+
+      setArticles(normalized);
+    } catch (err) {
+      console.error('Error fetching news:', err);
+    }
+  };
+
+  fetchNews();
+}, [category, country, search]);
+  
+
       const handleOpen = (articles) => {
       setSelectedArticle(articles);
       setOpen(true);
@@ -97,6 +131,19 @@ const Display = () => {
       setSelectedArticle(null);
     };
   
+    const toggleLike = (articles) => {
+   const alreadyLiked = likedArticles.find(a => a.title === articles.title);
+
+   if (alreadyLiked) {
+    setLikedArticles(prev => prev.filter(a => a.title !== articles.title));
+  } else {
+    setLikedArticles(prev => [...prev, articles]);
+  }
+};
+  const isLiked = (articles) =>
+  Array.isArray(likedArticles) &&
+  likedArticles.some((a) => a.url === articles.url);
+  const displayedArticles = showLikedOnly ? likedArticles : articles;
 
 
   return (
@@ -108,10 +155,10 @@ const Display = () => {
              <Card className="newscard" sx={{ maxWidth: 345 }}>
 
               <CardMedia
-  sx={{ height: 240 }}
-  image={val.image || 'https://placehold.co/345x240?text=No+Image'}
-  title={val.title}
-/>
+               sx={{ height: 240 }}
+               image={val.image || 'https://placehold.co/345x240?text=No+Image'}
+                title={val.title}
+                />
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
                   {val.title}
@@ -123,7 +170,7 @@ const Display = () => {
                   {val.description}
                 </Typography>
               </CardContent>
-              <CardActions>
+              <CardActions >
                 <Button
                   size="small"
                   onClick={() =>
@@ -138,10 +185,13 @@ const Display = () => {
                 >
                   Share
                 </Button>
-                <Button size="small" onClick={() => handleOpen(val)}>
-                 Learn More
-                
-                </Button>
+                <Button size="small" sx={{ mr: 13 }} onClick={() => handleOpen(val)}>
+                 Learn More</Button >
+
+                 {/*  Like Button */}
+                <IconButton onClick={() => toggleLike(val)} >
+                  <FavoriteIcon color={isLiked(val) ? 'error' : 'disabled'}/>
+                </IconButton>
               </CardActions>
             </Card>
           </Grid>
