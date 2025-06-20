@@ -209,7 +209,7 @@ const Display = ({showLikedOnly,
                     {new Date(selectedArticle.publishedAt).toLocaleString()}
                   </Typography>
                   <Typography variant="body1">
-                    {selectedArticle.description || "No description available."}
+                    {selectedArticle.content || "No content available."}
                   </Typography>
                 </DialogContent>
                 <DialogActions>
