@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const Custom = () => {
     var [input, setinput]=useState({title:"",description:"",content:"",url:"",image:"",publishedAt:"",name:""});
     var location=useLocation();
-  var navigate=useNavigate();
+    var navigate=useNavigate();
 
 
     const inputhandler=(e)=>{
