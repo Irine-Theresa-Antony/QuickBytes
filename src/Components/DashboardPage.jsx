@@ -11,32 +11,41 @@ const DashboardPage = () => {
   const [review, setReview] = useState('');
 
   const handleNoteSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (note.trim() === '') {
-      alert('Please write a note before submitting.');
-      return;
-    }
+  if (note.trim() === '') {
+    alert('Please write a note before submitting.');
+    return;
+  }
 
-    const dateOnly = selectedDate.toISOString().split('T')[0];
+  const loggedInEmail = localStorage.getItem('username'); // or 'email' based on your login logic
 
-    const input = {
-      note: note,
-      date: dateOnly,
-    };
+  if (!loggedInEmail) {
+    alert('User email not found. Please log in again.');
+    return;
+  }
 
-    axios
-      .post('http://localhost:3000/notes', input)
-      .then((res) => {
-        console.log(res);
-        alert(res.data);
-        setNote('');
-      })
-      .catch((err) => {
-        console.error(err);
-        alert('Error submitting note. Please try again.');
-      });
+  const dateOnly = selectedDate.toISOString().split('T')[0];
+
+  const input = {
+    name: loggedInEmail,  
+    note: note,
+    date: dateOnly,
   };
+
+  axios
+    .post('http://localhost:3000/notes', input)
+    .then((res) => {
+      console.log(res);
+      alert(res.data);
+      setNote('');
+    })
+    .catch((err) => {
+      console.error(err);
+      alert('Error submitting note. Please try again.');
+    });
+};
+
 
   const handleReviewSubmit = (e) => {
     e.preventDefault();
