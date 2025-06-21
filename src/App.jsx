@@ -16,7 +16,7 @@ import Display from './components/Display'
 import Admin from './components/Admin'
 import Viewcustom from './Components/Viewcustom'
 import UserView from './Components/UserView'
-
+import MyNotes from './Components/MyNotes'
 
 
 
@@ -34,7 +34,7 @@ function App() {
 
 
 
-  
+      
      <Navbar setCategory={setCategory} setCountry={setCountry} setSearch={setSearch} setShowLikedOnly={setShowLikedOnly}/>
      <Routes>
      <Route path='/' element={<Display category={category} country={country} search={search} showLikedOnly={showLikedOnly}
@@ -51,6 +51,8 @@ function App() {
       <Route path='/admin' element={<Admin/>}></Route>
       <Route path='/viewcustom' element={<Viewcustom/>}></Route>
       <Route path='/viewuser' element={<UserView/>}></Route>
+      <Route path='/mynote'element={<MyNotes/>}></Route>
+
      </Routes>
      
 
