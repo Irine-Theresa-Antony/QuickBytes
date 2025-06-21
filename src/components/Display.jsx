@@ -99,9 +99,9 @@ const Display = ({showLikedOnly,
   const fetchNews = async () => {
     try {
       const res = await axios.get(
-        `https://newsapi.org/v2/top-headlines?q=${search || 'news'}&category=${category}&country=${country}&pageSize=20&language=en&apiKey=a0c2b9ff9b5b49e791d5745aeb32ad20`
+        `https://gnews.io/api/v4/top-headlines?q=${search || 'news'}&topic=${category}&country=${country}&lang=en&max=20&apikey=1cbbe5fa5ff986155e9765cad37fc755`
       );
-      let normalized = res.data.articles.map(normalizeApi1);
+      let normalized = res.data.articles.map(normalizeApi2);
 
       //  Filter titles that start with the search text (case-insensitive)
       if (search) {
