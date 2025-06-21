@@ -12,7 +12,8 @@ import Profile from './components/Profile'
 import Custom from './components/Custom'
 import Addtomarket from './components/Addtomarket'
 import Market from './components/Market'
-import Display from './components/Display'
+import Navbar from './Components/Navbar'
+import Display from './Components/Display'
 import Viewcustom from './Components/Viewcustom'
 import  Filter  from './Components/Filter'
 import UserView from './Components/UserView'
@@ -50,7 +51,7 @@ function App() {
 
   
      <Navbar setShowLikedOnly={setShowLikedOnly}/>
-     {location.pathname === '/' && (
+     {location.pathname === '/home' && (
      <Filter
      setCategory={setCategory}
      setCountry={setCountry}
@@ -58,7 +59,7 @@ function App() {
      />)}
 
      <Routes>
-     <Route path='/' element={<Display showLikedOnly={showLikedOnly} category={category}
+     <Route path='/home' element={<Display showLikedOnly={showLikedOnly} category={category}
         country={country} search={search} likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>}></Route>
      <Route path='/r' element={<DashboardPage/>}></Route>
      <Route path='/terms' element={<Terms/>}></Route>
