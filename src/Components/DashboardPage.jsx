@@ -18,7 +18,7 @@ const DashboardPage = () => {
     return;
   }
 
-  const loggedInEmail = localStorage.getItem('username'); // or 'email' based on your login logic
+  const loggedInEmail = localStorage.getItem('username'); 
 
   if (!loggedInEmail) {
     alert('User email not found. Please log in again.');
@@ -89,6 +89,9 @@ const DashboardPage = () => {
         </button>
         <button>
           <Link to="/terms">TERMS AND CONDITIONS</Link>
+        </button>
+        <button>
+          <Link to="/mynote">VIEW NOTES</Link>
         </button>
       </div>
 

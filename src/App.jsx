@@ -17,14 +17,10 @@ import Display from './Components/Display'
 import Viewcustom from './Components/Viewcustom'
 import  Filter  from './Components/Filter'
 import UserView from './Components/UserView'
+import MyNotes from './Components/MyNotes'
 import Message from './components/Message'
 import Admin from './Components/Admin'
 import UserCompTab from './Components/UserCompTab'
-
-
-
-
-
 
 function App() {
   const location = useLocation();
@@ -47,7 +43,8 @@ function App() {
      setCountry={setCountry}
      setSearch={setSearch}
      />)}
-
+ 
+     <Navbar setCategory={setCategory} setCountry={setCountry} setSearch={setSearch} setShowLikedOnly={setShowLikedOnly}/>
      <Routes>
      <Route path='/home' element={<Display showLikedOnly={showLikedOnly} category={category}
         country={country} search={search} likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>}></Route>
@@ -64,9 +61,11 @@ function App() {
       <Route path='/admin/usercomp' element={<UserCompTab/>}></Route>
       <Route path='/viewcustom' element={<Viewcustom/>}></Route>
       <Route path='/viewuser' element={<UserView/>}></Route>
-     <Route path='/addtomarket'element={<Addtomarket/>}></Route>
+      <Route path='/mynote'element={<MyNotes/>}></Route>
+      <Route path='/addtomarket'element={<Addtomarket/>}></Route>
      <Route path='/market'element={<Market/>}></Route>
      <Route path='/message'element={<Message/>}></Route>
+
      </Routes>
      
     </>
