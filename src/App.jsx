@@ -18,8 +18,10 @@ import Display from './components/Display'
 import Viewcustom from './Components/Viewcustom'
 import  Filter  from './Components/Filter'
 import UserView from './Components/UserView'
-import Admin from './Components/Admin'
 import UserCompTab from './Components/UserCompTab'
+import ReportNews from './Components/ReportNews'
+import Admin from './components/Admin'
+import AdminReport from './Components/AdminReport'
 
 
 
@@ -66,6 +68,8 @@ function App() {
       <Route path='/viewuser' element={<UserView/>}></Route>
      <Route path='/addtomarket'element={<Addtomarket/>}></Route>
      <Route path='/market'element={<Market/>}></Route>
+     <Route path='/report'element={<ReportNews/>}></Route>
+     <Route path='/adminreport'element={<AdminReport/>}></Route>
      </Routes>
      
 
