@@ -17,8 +17,6 @@ import Display from './Components/Display'
 import Viewcustom from './Components/Viewcustom'
 import  Filter  from './Components/Filter'
 import UserView from './Components/UserView'
-
-import Navbar from './components/Navbar'
 import Message from './components/Message'
 import Admin from './Components/Admin'
 import UserCompTab from './Components/UserCompTab'
@@ -36,20 +34,12 @@ function App() {
   const [search, setSearch] = useState('');
   const [likedArticles, setLikedArticles] = useState([]);
   const [showLikedOnly, setShowLikedOnly] = useState(false);
-  const location = useLocation();
+
 
   const hideNavbarRoutes=['/signup','/login'];
 
   return (
     <>
-
-    {!hideNavbarRoutes.includes(location.pathname)&&(
-     <Navbar setCategory={setCategory} setCountry={setCountry} setSearch={setSearch} setShowLikedOnly={setShowLikedOnly}/>)}
-
-
-
-
-  
      <Navbar setShowLikedOnly={setShowLikedOnly}/>
      {location.pathname === '/home' && (
      <Filter
