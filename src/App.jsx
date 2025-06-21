@@ -36,15 +36,10 @@ function App() {
 
   return (
     <>
-     <Navbar setShowLikedOnly={setShowLikedOnly}/>
-     {location.pathname === '/home' && (
-     <Filter
-     setCategory={setCategory}
-     setCountry={setCountry}
-     setSearch={setSearch}
-     />)}
- 
-     <Navbar setCategory={setCategory} setCountry={setCountry} setSearch={setSearch} setShowLikedOnly={setShowLikedOnly}/>
+
+
+
+      
      <Routes>
      <Route path='/home' element={<Display showLikedOnly={showLikedOnly} category={category}
         country={country} search={search} likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>}></Route>
