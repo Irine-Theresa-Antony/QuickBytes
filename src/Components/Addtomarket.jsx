@@ -30,7 +30,7 @@ const Addtomarket = (props) => {
       .put(`http://localhost:3000/${location.state.val._id}`,inputs)
       .then((res)=>{
         alert(res.data);
-        navigate('/home')
+        navigate('/market')
       })
       .catch((err)=>{
         console.log(err);

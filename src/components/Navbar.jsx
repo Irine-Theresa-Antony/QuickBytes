@@ -1,6 +1,5 @@
 import { AppBar,Box, Button, IconButton, Toolbar, Typography, Drawer, List, ListItem, ListItemText } from '@mui/material'
 import React, { useState } from 'react'
-import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 
 
@@ -25,7 +24,7 @@ const Navbar = ({ setShowLikedOnly}) => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='left'>QuickBytes</Typography>
           <Button color="inherit"> <Link to ={'/home'} style={{color:"white"}}>Home</Link> </Button> 
           <Button color="inherit"> <Link to ={'/market'} style={{color:"white"}}>Market</Link> </Button>
-          <Button color="inherit">Chat</Button>
+          <Button color="inherit"><Link to ={'/message'} style={{color:"white"}}>Chat</Link></Button>
           <Button color="inherit"> <Link to ={'/r'} style={{color:"white"}}>Dashboard</Link> </Button>
           <Button color="inherit"><Link to ={'/login'} style={{color:"white"}}>Logout</Link></Button>
         </Toolbar>
