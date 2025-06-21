@@ -186,9 +186,7 @@ const Display = ({showLikedOnly,
                   Share
                 </Button>
                 <Button size="small" sx={{ mr: 13 }} onClick={() => handleOpen(val)}>
-                 Learn More
-                
-                </Button >
+                 Learn More</Button >
 
                  {/*  Like Button */}
                 <IconButton onClick={() => toggleLike(val)} >

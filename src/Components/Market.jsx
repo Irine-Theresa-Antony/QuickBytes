@@ -16,10 +16,9 @@ const Market = () => {
         },[])
   return (
     <div style={{
-        backgroundImage:  "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2g5vi6Yyx57V5a8vbqY2AgQXR11yS743Cng&s')",
         minHeight: '100vh'}}>
        <Grid container spacing={2} justifyContent="center"> 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '34rem',backgroundColor:'#E3F2FD', width: "100%", padding: '0 2rem'}}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '34rem',backgroundColor:'rgb(131, 180, 213)', width: "100%", padding: '0 2rem'}}>
             <Typography variant='h2' color='black'>Marketplace & Careers</Typography>&nbsp;
             <Button component={Link} to="/addtomarket" variant='contained' color='success' sx={{borderRadius: '20px',px: 3,py:1,fontSize: '1.2rem','&:focus': {outline: 'none',border: 'none', },}}>
                 ADD   
