@@ -22,7 +22,7 @@ const Navbar = ({ setShowLikedOnly}) => {
           >
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='left'>QuickBytes</Typography>
-          <Button color="inherit"> <Link to ={'/'} style={{color:"white"}}>Home</Link> </Button> 
+          <Button color="inherit"> <Link to ={'/home'} style={{color:"white"}}>Home</Link> </Button> 
           <Button color="inherit"> <Link to ={'/market'} style={{color:"white"}}>Market</Link> </Button>
           <Button color="inherit"><Link to ={'/message'} style={{color:"white"}}>Chat</Link></Button>
           <Button color="inherit"> <Link to ={'/r'} style={{color:"white"}}>Dashboard</Link> </Button>
