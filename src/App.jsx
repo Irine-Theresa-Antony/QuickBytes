@@ -37,7 +37,13 @@ function App() {
   return (
     <>
 
-
+    <Navbar setShowLikedOnly={setShowLikedOnly}/>
+     {location.pathname === '/' && (
+     <Filter
+     setCategory={setCategory}
+     setCountry={setCountry}
+     setSearch={setSearch}
+     />)}
 
       
      <Routes>
@@ -47,7 +53,6 @@ function App() {
      <Route path='/terms' element={<Terms/>}></Route>
      <Route path='/complaints' element={<Complaints/>}></Route>
      <Route path='/profile' element={<Profile/>}></Route>
-
      <Route path='/reviews' element={<Review/>}></Route>
      <Route path='/c' element={<Custom/>}></Route>
      <Route path='/signup' element={<SignUp/>}></Route>
