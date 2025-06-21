@@ -35,7 +35,7 @@ function App() {
 
 
       
-     <Navbar setCategory={setCategory} setCountry={setCountry} setSearch={setSearch} setShowLikedOnly={setShowLikedOnly}/>
+     
      <Routes>
      <Route path='/' element={<Display category={category} country={country} search={search} showLikedOnly={showLikedOnly}
        likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>}></Route>
