@@ -16,18 +16,18 @@ const Market = () => {
         },[])
   return (
     <div style={{
-        minHeight: '100vh'}}>
-       <Grid container spacing={2} justifyContent="center"> 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '34rem',backgroundColor:'rgb(131, 180, 213)', width: "100%", padding: '0 2rem'}}>
-            <Typography variant='h2' color='black'>Marketplace & Careers</Typography>&nbsp;
-            <Button component={Link} to="/addtomarket" variant='contained' color='success' sx={{borderRadius: '20px',px: 3,py:1,fontSize: '1.2rem','&:focus': {outline: 'none',border: 'none', },}}>
+        minHeight: '100vh', backgroundColor:"white"}}>
+       <Grid container spacing={2} justifyContent="center" > 
+        <div style={{ display: 'flex', alignItems: 'center', gap: '34rem', width: "100%", padding: '0 2rem'}}>
+            <Typography variant='h2' color='#800808'>Marketplace & Careers</Typography>&nbsp;
+            <Button component={Link} to="/addtomarket" variant='contained' sx={{backgroundColor:"#800808",borderRadius: '20px',px: 3,py:1,fontSize: '1.2rem','&:focus': {outline: 'none',border: 'none', },}}>
                 ADD   
             </Button>
         </div>
         {pro.map((val,i)=>{
-            return(
+            return( 
                     <Grid item xs={12} sm={6} md={4} key={i} className="grid-item">
-                        <Card sx={{ maxWidth: 345, height: '100%', display: 'flex', flexDirection: 'column', border:'2px solid rgb(0, 0, 0)', backgroundColor:'rgb(131, 180, 213)' }}>
+                        <Card sx={{ maxWidth: 345, height: '100%', display: 'flex', flexDirection: 'column', border:'2px solid rgb(0, 0, 0)', backgroundColor:'white' }}>
                             <CardActionArea sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                                 <CardContent sx={{ textAlign: 'left', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                                     <div>

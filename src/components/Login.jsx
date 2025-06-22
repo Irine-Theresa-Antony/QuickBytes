@@ -47,23 +47,52 @@ const Login = () => {
           zIndex: -1,
         }}
       >
-        <source src="/videos/vecteezy_digital-earth-hud-rotating-globe-rotating_4358884.mp4" type="video/mp4" />
+        {/* <source src="/videos/vidoe.mp4" type="video/mp4" /> */}
+        <source src='/videos/video.mp4' type="video/mp4"/>
         Your browser does not support the video tag.
       </video>
-
+        <br /><br /><br />
       <div style={{
         height: '80vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-        <Box component="section" sx={{ p: 4, border: '1px solid rgb(1, 23, 46)',bgcolor:'rgb(54, 92, 133)' }} width={300} height={380}>
+        <Box component="section" sx={{ p: 4, borderRadius: '20px', border: '1px solid rgb(53, 52, 52)',bgcolor:'rgba(53, 52, 52, 0.8)' }} width={300} height={380}>
           <Typography variant='h2'>LogIn</Typography><br />
           <Typography variant='h5'>Email</Typography>
-          <TextField variant='outlined' label="Email" onChange={(e) => setEmail(e.target.value)}></TextField><br /><br />
+          <TextField variant='outlined' label="Email" onChange={(e) => setEmail(e.target.value)}sx={{
+      input: { color: 'white' },
+      label: { color: 'gray' },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: 'white',
+        },
+        '&:hover fieldset': {
+          borderColor: 'white',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: 'white',
+        },
+      }
+    }}></TextField><br /><br />
           <Typography variant='h5'>Password</Typography>
-          <TextField variant='outlined' label="password" onChange={(e) => setPassword(e.target.value)}></TextField><br /><br />
-          <Button variant='contained' onClick={submitHandler} sx={{ borderRadius: '20px', px: 4, alignSelf: 'center', '&:focus': { outline: 'none', border: 'none', }, }}>LogIn</Button>
+          <TextField variant='outlined' label="Password" onChange={(e) => setPassword(e.target.value)}sx={{
+      input: { color: 'white' },
+      label: { color: 'gray' },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: 'white',
+        },
+        '&:hover fieldset': {
+          borderColor: 'white',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: 'white',
+        },
+      }
+    }}></TextField><br /><br />
+          <Button variant='contained' onClick={submitHandler} sx={{ backgroundColor:"#800808", borderRadius: '20px', px: 4, alignSelf: 'center', '&:focus': { outline: 'none', border: 'none', }, }}>LogIn</Button>
         </Box>
       </div>
     </>

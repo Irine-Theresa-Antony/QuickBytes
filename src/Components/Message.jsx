@@ -49,12 +49,13 @@ const Message = () => {
   };
 
   return (
-    <div><br /><br />
+    <div style={{ backgroundColor: 'white', minHeight: '100vh', paddingBottom: '2rem' }}>
+    <br /><br />
         <Typography 
             variant='h3' 
             style={{ 
                 textAlign: 'center', 
-                color: 'white' 
+                color: '#800808' 
             }}
             >
             QuickBytes Community Chat
@@ -99,7 +100,7 @@ const Message = () => {
                 endAdornment: (
                     <InputAdornment position="end">
                     <IconButton component="label">
-                        <AttachFileIcon />
+                        <AttachFileIcon style={{ color: 'white' }}/>
                         <input
                           type="file"
                           hidden
@@ -116,14 +117,14 @@ const Message = () => {
                 sx={{
                 '& .MuiOutlinedInput-root': {
                     '& fieldset': {
-                    borderColor: 'white',
+                    borderColor: 'black',
                     borderWidth: '2px',
                     },
                     '&:hover fieldset': {
-                    borderColor: 'white',
+                    borderColor: 'black',
                     },
                     '&.Mui-focused fieldset': {
-                    borderColor: 'white',
+                    borderColor: 'black',
                     },
                 },
                 }}
