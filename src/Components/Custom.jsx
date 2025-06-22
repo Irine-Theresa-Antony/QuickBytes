@@ -38,7 +38,7 @@ const Custom = () => {
             axios.post("http://localhost:3000/addcustom", input)
                 .then((res) => {
                     alert(res.data);
-                    navigate('/');
+                    navigate('/home');
                 }).catch((err) => console.log(err));
         }
     }
