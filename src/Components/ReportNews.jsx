@@ -35,7 +35,7 @@ const ReportNews = () => {
       .post("http://localhost:3000/addreport", input)
       .then((res) => {
         alert(res.data);
-        navigate('/')
+        navigate('/home')
       })
       .catch((err) => {
         console.log(err);
