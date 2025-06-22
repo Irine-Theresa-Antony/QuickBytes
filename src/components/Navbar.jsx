@@ -10,7 +10,7 @@ const Navbar = ({ setShowLikedOnly}) => {
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: '#800808' }}>
         <Toolbar>
           <IconButton
             size="large"

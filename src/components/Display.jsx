@@ -182,10 +182,11 @@ const Display = ({showLikedOnly,
                         })
                       : alert('Share not supported in your browser')
                   }
+                  sx={{ color: '#800808' }}
                 >
                   Share
                 </Button>
-                <Button size="small" sx={{ mr: 13 }} onClick={() => handleOpen(val)}>
+                <Button size="small" sx={{ mr: 13, color: '#800808' }} onClick={() => handleOpen(val)}>
                  Learn More</Button >
 
                  {/*  Like Button */}
@@ -211,12 +212,23 @@ const Display = ({showLikedOnly,
                   </Typography>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleClose}>Close</Button>
+                  <Button onClick={handleClose} sx={{ backgroundColor: '#800808',
+                 color: '#fff',
+                 '&:hover': {
+                  backgroundColor: '#a00a0a',
+                  },
+                 }}>Close</Button>
                   <Button
                     variant="contained"
                     href={selectedArticle.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    sx={{backgroundColor: '#800808',
+                         color: '#fff',
+                         '&:hover': {
+                          backgroundColor: '#a00a0a',
+                           },
+                       }}
                   >
                     Go to Source
                   </Button>
