@@ -63,7 +63,7 @@ function App() {
      <Route path='/profile' element={<Profile/>}></Route>
      <Route path='/reviews' element={<Review/>}></Route>
      <Route path='/c' element={<Custom/>}></Route>
-     <Route path='/signup' element={<SignUp/>}></Route>
+     <Route path='/' element={<SignUp/>}></Route>
      <Route path='/login'element={<Login/>}></Route>
       <Route path='/admin' element={<Admin/>}></Route>
       <Route path='/admin/usercomp' element={<UserCompTab/>}></Route>

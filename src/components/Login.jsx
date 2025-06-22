@@ -19,7 +19,7 @@ const Login = () => {
           if (email === "quickbytesadmin@gmail.com" && password === "quickbytesadmin") {
             navigate('/admin');
           } else {
-            navigate('/');
+            navigate('/home');
           }
         }else if (result.data.status === "User Not Exist") {
         alert("User does not exist. Please sign up first.");
