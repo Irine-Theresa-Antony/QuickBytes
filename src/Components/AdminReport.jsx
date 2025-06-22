@@ -1,97 +1,131 @@
-
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from '@mui/material'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const AdminReport = () => {
 
-    var [repo,setrepo]=useState([])
-  var navigate= useNavigate();
-  useEffect(()=>{
+  var [repo, setrepo] = useState([])
+  var navigate = useNavigate();
+
+  useEffect(() => {
     axios
-    .get("http://localhost:3000/viewreport")
-    .then((res)=>{
-      console.log(res.data)
-      setrepo(res.data)
+      .get("http://localhost:3000/viewreport")
+      .then((res) => {
+        console.log(res.data)
+        setrepo(res.data)
+      })
+      .catch((err) => console.log(err))
+  }, [])
+
+  const DeleteHandler = (id) => {
+    console.log(id);
+    axios.delete(`http://localhost:3000/rdel/${id}`).then((res) => {
+      console.log(res);
+      alert(res.data)
+      window.location.reload()
+    }).catch((err) => {
+      console.log(err);
     })
-    .catch((err)=>
-      console.log(err)
-    )
-  },[])
+  }
 
-  const DeleteHandler=(id)=>{
-        console.log(id);
-        axios.delete(`http://localhost:3000/rdel/${id}`).then((res)=>{
-          console.log(res);
-          alert(res.data)
-          window.location.reload()
-        }).catch((err)=>{
-          console.log(err);
-        })
-      }
-
-      const MarkAsReadHandler = (id) => {
-  console.log(id);
-  axios.put(`http://localhost:3000/markasread/${id}`).then((res)=>{
-    console.log(res);
-    alert(res.data);
-    window.location.reload();
-  }).catch((err)=>{
-    console.log(err);
-  })
-}
-
-
+  const MarkAsReadHandler = (id) => {
+    console.log(id);
+    axios.put(`http://localhost:3000/markasread/${id}`).then((res) => {
+      console.log(res);
+      alert(res.data);
+      window.location.reload();
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
 
   return (
     <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
       minHeight: '100vh',
-      backgroundColor: '#f5f5f5',
+      backgroundColor: '#FFFFFF',
+      padding: '2rem'
     }}>
-    <TableContainer style={{
-          margin:'30px',
-          border: '2px solid lightblue',
-          width: '100%',  
-          boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+      <Box sx={{
+        backgroundColor: '#000000',
+        border: '1px solid #DCDCDC',
+        borderRadius: '10px',
+        padding: '2rem',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+      }}>
+        <Typography variant='h4' sx={{
+          textAlign: 'center',
+          color: '#800808',
+          fontWeight: 'bold',
+          marginBottom: '2rem'
         }}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Title</TableCell>
-            <TableCell >Description</TableCell>
-            <TableCell >Location</TableCell>
-            <TableCell >Date & Time</TableCell>
-            <TableCell >User Name</TableCell>
-            <TableCell >Email Id</TableCell>
-            <TableCell >Number</TableCell>
-            <TableCell >Delete</TableCell>
-            <TableCell >Mark As Read</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {[...repo].reverse().map((val,i)=>{
-            return(
-                <TableRow key={i} style={val.isRead ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
-                <TableCell>{val.title}</TableCell>
-                <TableCell>{val.description}</TableCell>
-                <TableCell>{val.location}</TableCell>
-                <TableCell>{val.datetime}</TableCell>
-                <TableCell>{val.name}</TableCell>
-                <TableCell>{val.email}</TableCell>
-                <TableCell>{val.num}</TableCell>
-                <TableCell><Button variant='outlined' color='error' onClick={()=>{DeleteHandler(val._id)}}>Delete</Button></TableCell>
-                <TableCell><Button variant='outlined' color='success' onClick={()=>{MarkAsReadHandler(val._id)}}>Mark As Read</Button></TableCell>
+          Admin Reports
+        </Typography>
+
+        <TableContainer>
+          <Table sx={{ minWidth: 650 }}>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: '#DCDCDC' }}>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Title</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Description</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Location</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Date & Time</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>User Name</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Email Id</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Number</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Delete</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Mark As Read</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {[...repo].reverse().map((val, i) => (
+                <TableRow key={i} sx={{
+                  backgroundColor: '#1e1e1e',
+                  ...(val.isRead ? { opacity: 0.5, pointerEvents: 'none' } : {})
+                }}>
+                  <TableCell sx={{ color: '#DCDCDC' }}>{val.title}</TableCell>
+                  <TableCell sx={{ color: '#DCDCDC' }}>{val.description}</TableCell>
+                  <TableCell sx={{ color: '#DCDCDC' }}>{val.location}</TableCell>
+                  <TableCell sx={{ color: '#DCDCDC' }}>{val.datetime}</TableCell>
+                  <TableCell sx={{ color: '#DCDCDC' }}>{val.name}</TableCell>
+                  <TableCell sx={{ color: '#DCDCDC' }}>{val.email}</TableCell>
+                  <TableCell sx={{ color: '#DCDCDC' }}>{val.num}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant='contained'
+                      sx={{
+                        backgroundColor: '#800808',
+                        '&:hover': { backgroundColor: '#a00010' },
+                        color: '#FFFFFF',
+                        fontWeight: 'bold'
+                      }}
+                      onClick={() => { DeleteHandler(val._id) }}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant='contained'
+                      sx={{
+                        backgroundColor: '#DCDCDC',
+                        color: '#000000',
+                        fontWeight: 'bold',
+                        '&:hover': {
+                          backgroundColor: '#bbbbbb',
+                        }
+                      }}
+                      onClick={() => { MarkAsReadHandler(val._id) }}
+                    >
+                      Mark As Read
+                    </Button>
+                  </TableCell>
                 </TableRow>
-            )
-          }
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </div>
   )
 }

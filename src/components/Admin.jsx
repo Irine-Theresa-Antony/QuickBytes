@@ -343,6 +343,20 @@ const Admin = () => {
         </Link>
       </Button>
 
+      <Button
+        variant="contained"
+        sx={{
+          backgroundColor: '#2196f3',
+          textAlign: 'left',
+          '&:hover': { backgroundColor: '#0d47a1' },
+        }}
+        fullWidth
+      >
+        <Link to="/adminreport" style={{ color: 'white', textDecoration: 'none', width: '100%' }}>
+          View Users Report
+        </Link>
+      </Button>
+
       </Box>
 
 
