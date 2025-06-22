@@ -25,7 +25,7 @@ const Filter = ({ setCategory, setCountry, setSearch }) => {
     <div>
        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 2, flexWrap: 'wrap' }}>
       {/* Search */}
-      <Box sx={{ display: 'flex', alignItems: 'center', backgroundColor: 'white', borderRadius: 1, px: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', backgroundColor: 'white', borderRadius: 1, px: 1,border: '1px solid black' }}>
         <InputBase
           placeholder="Search…"
           value={searchInput}
@@ -38,7 +38,11 @@ const Filter = ({ setCategory, setCountry, setSearch }) => {
 
       {/* Category */}
       <Box>
-        <Button variant="contained" onClick={(e) => setAnchorElCat(e.currentTarget)}>Category</Button>
+        <Button variant="contained" sx={{
+      backgroundColor: '#800808',
+       '&:hover': { backgroundColor: '#a00a0a' }
+       }}
+    onClick={(e) => setAnchorElCat(e.currentTarget)}>Category</Button>
         <Menu anchorEl={anchorElCat} open={Boolean(anchorElCat)} onClose={() => setAnchorElCat(null)}>
           {categories.map((cat, idx) => (
             <MenuItem key={idx} onClick={() => { setCategory(cat); setAnchorElCat(null); }}>
@@ -50,7 +54,11 @@ const Filter = ({ setCategory, setCountry, setSearch }) => {
 
       {/* Country */}
       <Box>
-        <Button variant="contained" onClick={(e) => setAnchorElCountry(e.currentTarget)}>Country</Button>
+        <Button variant="contained" sx={{
+       backgroundColor: '#800808',
+      '&:hover': { backgroundColor: '#a00a0a' }
+       }}
+       onClick={(e) => setAnchorElCountry(e.currentTarget)}>Country</Button>
         <Menu anchorEl={anchorElCountry} open={Boolean(anchorElCountry)} onClose={() => setAnchorElCountry(null)}>
           {countries.map((c, idx) => (
             <MenuItem key={idx} onClick={() => { setCountry(c.code); setAnchorElCountry(null); }}>
