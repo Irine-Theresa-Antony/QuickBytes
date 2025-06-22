@@ -6,13 +6,16 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const Display = () => {
+const Display = ({showLikedOnly,
+  likedArticles,
+  setLikedArticles,
+  category,
+  country,
+  search }) => {
   const [articles, setArticles] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
-  const [search, setSearch] = useState('');
-  const [likedArticles, setLikedArticles] = useState([]);
-  const [showLikedOnly, setShowLikedOnly] = useState([]);
+  
 
   const normalizeApi1 = (item) => ({
     title: item.title,
@@ -92,14 +95,30 @@ const Display = () => {
 
 
   //useEffect(()=>{},[]) to maintain bulk users
-      useEffect(()=>{
-          //axios.get("url").then((res)=>{}).catch()
-          axios.get(`https://newsapi.org/v2/everything?q=${search}&q=news&sortBy=publishedAt&pageSize=20&language=en&apiKey=954c3723dea74bdcbb55ab18866a3274`)
-          .then((res)=>{
-              console.log(res.data.articles.length)
-              setArticles(res.data.articles)
-          }).catch((err) => console.log(err))
-      },[])
+      useEffect(() => {
+  const fetchNews = async () => {
+    try {
+      const res = await axios.get(
+        `https://gnews.io/api/v4/top-headlines?q=${search || 'news'}&topic=${category}&country=${country}&lang=en&max=20&apikey=1cbbe5fa5ff986155e9765cad37fc755`
+      );
+      let normalized = res.data.articles.map(normalizeApi2);
+
+      //  Filter titles that start with the search text (case-insensitive)
+      if (search) {
+        const lowerSearch = search.toLowerCase();
+        normalized = normalized.filter(article =>
+          article.title?.toLowerCase().startsWith(lowerSearch)
+        );
+      }
+
+      setArticles(normalized);
+    } catch (err) {
+      console.error('Error fetching news:', err);
+    }
+  };
+
+  fetchNews();
+}, [category, country, search]);
   
 
       const handleOpen = (articles) => {
@@ -113,14 +132,14 @@ const Display = () => {
     };
   
     const toggleLike = (articles) => {
-    const isLiked = Array.isArray(likedArticles) && likedArticles.some((a) => a.url === articles.url);
+   const alreadyLiked = likedArticles.find(a => a.title === articles.title);
 
-    if (isLiked) {
-      setLikedArticles(likedArticles.filter((a) => a.url !== articles.url));
-    } else {
-      setLikedArticles([...likedArticles, articles]);
-    }
-  };
+   if (alreadyLiked) {
+    setLikedArticles(prev => prev.filter(a => a.title !== articles.title));
+  } else {
+    setLikedArticles(prev => [...prev, articles]);
+  }
+};
   const isLiked = (articles) =>
   Array.isArray(likedArticles) &&
   likedArticles.some((a) => a.url === articles.url);
@@ -136,10 +155,10 @@ const Display = () => {
              <Card className="newscard" sx={{ maxWidth: 345 }}>
 
               <CardMedia
-  sx={{ height: 240 }}
-  image={val.image || 'https://placehold.co/345x240?text=No+Image'}
-  title={val.title}
-/>
+               sx={{ height: 240 }}
+               image={val.image || 'https://placehold.co/345x240?text=No+Image'}
+                title={val.title}
+                />
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
                   {val.title}
@@ -163,13 +182,12 @@ const Display = () => {
                         })
                       : alert('Share not supported in your browser')
                   }
+                  sx={{ color: '#800808' }}
                 >
                   Share
                 </Button>
-                <Button size="small" sx={{ mr: 13 }} onClick={() => handleOpen(val)}>
-                 Learn More
-                
-                </Button >
+                <Button size="small" sx={{ mr: 13, color: '#800808' }} onClick={() => handleOpen(val)}>
+                 Learn More</Button >
 
                  {/*  Like Button */}
                 <IconButton onClick={() => toggleLike(val)} >
@@ -194,12 +212,23 @@ const Display = () => {
                   </Typography>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleClose}>Close</Button>
+                  <Button onClick={handleClose} sx={{ backgroundColor: '#800808',
+                 color: '#fff',
+                 '&:hover': {
+                  backgroundColor: '#a00a0a',
+                  },
+                 }}>Close</Button>
                   <Button
                     variant="contained"
                     href={selectedArticle.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    sx={{backgroundColor: '#800808',
+                         color: '#fff',
+                         '&:hover': {
+                          backgroundColor: '#a00a0a',
+                           },
+                       }}
                   >
                     Go to Source
                   </Button>

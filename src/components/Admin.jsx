@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box,
-  Divider,
-  Drawer,
+  
+  
   List,
   ListItem,
-  ListItemButton,
+  
   ListItemIcon,
   ListItemText,
   Toolbar,
@@ -340,6 +340,20 @@ const Admin = () => {
       >
         <Link to="/viewuser" style={{ color: 'white', textDecoration: 'none', width: '100%' }}>
           View Users List
+        </Link>
+      </Button>
+
+      <Button
+        variant="contained"
+        sx={{
+          backgroundColor: '#2196f3',
+          textAlign: 'left',
+          '&:hover': { backgroundColor: '#0d47a1' },
+        }}
+        fullWidth
+      >
+        <Link to="/adminreport" style={{ color: 'white', textDecoration: 'none', width: '100%' }}>
+          View Users Report
         </Link>
       </Button>
 

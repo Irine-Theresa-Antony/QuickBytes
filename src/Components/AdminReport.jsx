@@ -1,34 +1,43 @@
-import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from '@mui/material'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const Viewcustom = () => {
-  var [cnews, setcnews] = useState([])
+const AdminReport = () => {
+
+  var [repo, setrepo] = useState([])
   var navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:3000/viewcustom")
+    axios
+      .get("http://localhost:3000/viewreport")
       .then((res) => {
         console.log(res.data)
-        setcnews(res.data)
+        setrepo(res.data)
       })
       .catch((err) => console.log(err))
   }, [])
 
   const DeleteHandler = (id) => {
     console.log(id);
-    axios.delete(`http://localhost:3000/cdel/${id}`)
-      .then((res) => {
-        console.log(res);
-        alert(res.data)
-        window.location.reload()
-      }).catch((err) => console.log(err));
+    axios.delete(`http://localhost:3000/rdel/${id}`).then((res) => {
+      console.log(res);
+      alert(res.data)
+      window.location.reload()
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 
-  const updateHandler = (val) => {
-    console.log(val);
-    navigate('/c', { state: { val } })
+  const MarkAsReadHandler = (id) => {
+    console.log(id);
+    axios.put(`http://localhost:3000/markasread/${id}`).then((res) => {
+      console.log(res);
+      alert(res.data);
+      window.location.reload();
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 
   return (
@@ -50,7 +59,7 @@ const Viewcustom = () => {
           fontWeight: 'bold',
           marginBottom: '2rem'
         }}>
-          View Custom News
+          Admin Reports
         </Typography>
 
         <TableContainer>
@@ -59,27 +68,28 @@ const Viewcustom = () => {
               <TableRow sx={{ backgroundColor: '#DCDCDC' }}>
                 <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Title</TableCell>
                 <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Description</TableCell>
-                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Content</TableCell>
-                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Url</TableCell>
-                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Image</TableCell>
-                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>PublishedAt</TableCell>
-                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>PublishedBy</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Location</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Date & Time</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>User Name</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Email Id</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Number</TableCell>
                 <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Delete</TableCell>
-                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Update</TableCell>
+                <TableCell sx={{ color: '#000000', fontWeight: 'bold' }}>Mark As Read</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {cnews.map((val, i) => (
+              {[...repo].reverse().map((val, i) => (
                 <TableRow key={i} sx={{
-                  backgroundColor: '#1e1e1e'
+                  backgroundColor: '#1e1e1e',
+                  ...(val.isRead ? { opacity: 0.5, pointerEvents: 'none' } : {})
                 }}>
                   <TableCell sx={{ color: '#DCDCDC' }}>{val.title}</TableCell>
                   <TableCell sx={{ color: '#DCDCDC' }}>{val.description}</TableCell>
-                  <TableCell sx={{ color: '#DCDCDC' }}>{val.content}</TableCell>
-                  <TableCell sx={{ color: '#DCDCDC' }}>{val.url}</TableCell>
-                  <TableCell sx={{ color: '#DCDCDC' }}>{val.image}</TableCell>
-                  <TableCell sx={{ color: '#DCDCDC' }}>{val.publishedAt}</TableCell>
+                  <TableCell sx={{ color: '#DCDCDC' }}>{val.location}</TableCell>
+                  <TableCell sx={{ color: '#DCDCDC' }}>{val.datetime}</TableCell>
                   <TableCell sx={{ color: '#DCDCDC' }}>{val.name}</TableCell>
+                  <TableCell sx={{ color: '#DCDCDC' }}>{val.email}</TableCell>
+                  <TableCell sx={{ color: '#DCDCDC' }}>{val.num}</TableCell>
                   <TableCell>
                     <Button
                       variant='contained'
@@ -105,9 +115,9 @@ const Viewcustom = () => {
                           backgroundColor: '#bbbbbb',
                         }
                       }}
-                      onClick={() => { updateHandler(val) }}
+                      onClick={() => { MarkAsReadHandler(val._id) }}
                     >
-                      Update
+                      Mark As Read
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -120,4 +130,4 @@ const Viewcustom = () => {
   )
 }
 
-export default Viewcustom
+export default AdminReport
