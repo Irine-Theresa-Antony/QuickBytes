@@ -87,11 +87,15 @@ const DashboardPage = () => {
         <button>
           <Link to="/reviews">REVIEWS</Link>
         </button>
-        <button>
-          <Link to="/terms">TERMS AND CONDITIONS</Link>
-        </button>
+        
         <button>
           <Link to="/mynote">VIEW NOTES</Link>
+        </button>
+        <button>
+          <Link to="/report">REPORT NEWS</Link>
+        </button>
+        <button>
+          <Link to="/terms">TERMS AND CONDITIONS</Link>
         </button>
       </div>
 
