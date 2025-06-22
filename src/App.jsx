@@ -41,7 +41,7 @@ function App() {
   return (
     <>
      <Navbar setShowLikedOnly={setShowLikedOnly}/>
-     {location.pathname === '/home' && (
+     {location.pathname === '/' && (
      <Filter
      setCategory={setCategory}
      setCountry={setCountry}
