@@ -28,14 +28,10 @@ const UserCompTab = () => {
 
   const handleRespond = async (complaintId) => {
     try {
-      // Update the complaint status
       await axios.patch(`http://localhost:3000/admin/respond-complaint/${complaintId}`, {
         status: 'responded'
       });
-      
-      // Refresh the complaints list
       await fetchComplaints();
-      
       console.log("Complaint status updated successfully");
     } catch (err) {
       console.error("Error updating complaint status:", err);
@@ -46,7 +42,7 @@ const UserCompTab = () => {
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" mt={4}>
-        <CircularProgress />
+        <CircularProgress style={{ color: '#800808' }} />
       </Box>
     );
   }
@@ -54,37 +50,54 @@ const UserCompTab = () => {
   if (error) {
     return (
       <Box display="flex" justifyContent="center" mt={4}>
-        <Typography color="error">{error}</Typography>
+        <Typography style={{ color: '#800808' }}>{error}</Typography>
       </Box>
     );
   }
 
   return (
-    <Box p={3}>
-      <Typography variant="h4" gutterBottom>User Complaints</Typography>
+    <Box p={3} style={{ backgroundColor: 'white', minHeight: '100vh' }}>
+      <Typography 
+        variant="h4" 
+        gutterBottom 
+        style={{ 
+          color: '#800808', 
+          marginBottom: '20px',
+          fontWeight: 'bold'
+        }}
+      >
+        User Complaints
+      </Typography>
       
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ backgroundColor: 'black' }}>
         <Table sx={{ minWidth: 650 }} aria-label="complaints table">
           <TableHead>
-            <TableRow sx={{ backgroundColor: 'primary.main' }}>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }} align="center">Complaint ID</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }} align="center">User Email</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }} align="center">Issue</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }} align="center">Description</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }} align="center">Date</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }} align="center">Status</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }} align="center">Action</TableCell>
+            <TableRow style={{ backgroundColor: '#800808' }}>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">Complaint ID</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">User Email</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">Issue</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">Description</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">Date</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">Status</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {comp.length > 0 ? (
               comp.map((val) => (
-                <TableRow key={val._id} hover>
-                  <TableCell align="center">{val._id}</TableCell>
-                  <TableCell align="center">{val.userId?.email || 'N/A'}</TableCell>
-                  <TableCell align="center">{val.issue}</TableCell>
-                  <TableCell align="center">{val.description}</TableCell>
-                  <TableCell align="center">
+                <TableRow 
+                  key={val._id}
+                  hover
+                  style={{ 
+                    backgroundColor: 'black',
+                    '&:hover': { backgroundColor: '#1a1a1a' }
+                  }}
+                >
+                  <TableCell style={{ color: 'white' }} align="center">{val._id}</TableCell>
+                  <TableCell style={{ color: 'white' }} align="center">{val.userId?.email || 'N/A'}</TableCell>
+                  <TableCell style={{ color: 'white' }} align="center">{val.issue}</TableCell>
+                  <TableCell style={{ color: 'white' }} align="center">{val.description}</TableCell>
+                  <TableCell style={{ color: 'white' }} align="center">
                     {new Date(val.date).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'short',
@@ -93,11 +106,18 @@ const UserCompTab = () => {
                       minute: '2-digit'
                     })}
                   </TableCell>
-                  <TableCell align="center">{val.status}</TableCell>
+                  <TableCell style={{ color: 'white' }} align="center">{val.status}</TableCell>
                   <TableCell align="center">
                     <Button 
                       variant="contained" 
-                      color={val.status === 'responded' ? 'success' : 'error'}
+                      style={{
+                        backgroundColor: val.status === 'responded' ? '#DCDCDC' : '#800808',
+                        color: val.status === 'responded' ? 'black' : 'white',
+                        '&:hover': {
+                          backgroundColor: '#800808',
+                          color: 'white'
+                        }
+                      }}
                       onClick={() => handleRespond(val._id)}
                       disabled={val.status === 'responded'}
                     >
@@ -107,8 +127,8 @@ const UserCompTab = () => {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={7} align="center">
+              <TableRow style={{ backgroundColor: 'black' }}>
+                <TableCell style={{ color: 'white' }} colSpan={7} align="center">
                   No complaints found
                 </TableCell>
               </TableRow>
