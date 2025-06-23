@@ -18,7 +18,6 @@ import Viewcustom from './Components/Viewcustom'
 import  Filter  from './Components/Filter'
 import UserView from './Components/UserView'
 import UserCompTab from './Components/UserCompTab'
-import ProtectedRoute from './context/ProtectedRoute'
 import Admin from './Components/Admin'
 import UnauthorizedPage from './Components/UnauthorizedPage'
 import MyNotes from './Components/MyNotes'
@@ -75,16 +74,7 @@ function App() {
 
 
      {/*protected*/}
-     <Route path='/admin' element={
-       <ProtectedRoute roles={['admin']}>
-           <Admin/>
-      </ProtectedRoute>
-     }></Route>
-
-
-     
-
-
+     <Route path='/admin' element={ <Admin/>}></Route>
 
 
       <Route path='/mynote'element={<MyNotes/>}></Route>
