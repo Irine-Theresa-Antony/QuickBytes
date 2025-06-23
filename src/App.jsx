@@ -54,6 +54,10 @@ function App() {
 
       
      <Routes>
+     <Route path='/user' element={
+        <Display category={category} country={country} search={search} showLikedOnly={showLikedOnly}
+       likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>
+     }></Route>
      <Route path='/home' element={<Display showLikedOnly={showLikedOnly} category={category}
         country={country} search={search} likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>}></Route>
      <Route path='/r' element={<DashboardPage/>}></Route>
@@ -78,12 +82,7 @@ function App() {
      }></Route>
 
 
-      <Route path='/user' element={
-       <ProtectedRoute roles={['admin','user']}>
-           <Display category={category} country={country} search={search} showLikedOnly={showLikedOnly}
-       likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>
-      </ProtectedRoute>
-     }></Route>
+     
 
 
 
