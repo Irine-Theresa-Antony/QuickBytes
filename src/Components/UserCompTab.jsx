@@ -10,27 +10,39 @@ const UserCompTab = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchComplaints = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/admin/usercomp");
-        // Sort by date in descending order (newest first)
-        const sortedData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
-        setComp(sortedData);
-      } catch (err) {
-        console.error("Error fetching complaints:", err);
-        setError("Failed to load complaints");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchComplaints();
   }, []);
+
+  const fetchComplaints = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/admin/usercomp");
+      const sortedData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+      setComp(sortedData);
+    } catch (err) {
+      console.error("Error fetching complaints:", err);
+      setError("Failed to load complaints");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRespond = async (complaintId) => {
+    try {
+      await axios.patch(`http://localhost:3000/admin/respond-complaint/${complaintId}`, {
+        status: 'responded'
+      });
+      await fetchComplaints();
+      console.log("Complaint status updated successfully");
+    } catch (err) {
+      console.error("Error updating complaint status:", err);
+      setError("Failed to update complaint status");
+    }
+  };
 
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" mt={4}>
-        <CircularProgress />
+        <CircularProgress style={{ color: '#800808' }} />
       </Box>
     );
   }
@@ -38,34 +50,54 @@ const UserCompTab = () => {
   if (error) {
     return (
       <Box display="flex" justifyContent="center" mt={4}>
-        <Typography color="error">{error}</Typography>
+        <Typography style={{ color: '#800808' }}>{error}</Typography>
       </Box>
     );
   }
 
   return (
-    <Box p={3}>
-      <Typography variant="h4" gutterBottom>User Complaints</Typography>
+    <Box p={3} style={{ backgroundColor: 'white', minHeight: '100vh' }}>
+      <Typography 
+        variant="h4" 
+        gutterBottom 
+        style={{ 
+          color: '#800808', 
+          marginBottom: '20px',
+          fontWeight: 'bold'
+        }}
+      >
+        User Complaints
+      </Typography>
       
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ backgroundColor: 'black' }}>
         <Table sx={{ minWidth: 650 }} aria-label="complaints table">
           <TableHead>
-            <TableRow sx={{ backgroundColor: 'primary.main' }}>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }} align="center">ID</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }} align="center">Issue</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }} align="center">Description</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }} align="center">Date</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }} align="center">Action</TableCell>
+            <TableRow style={{ backgroundColor: '#800808' }}>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">Complaint ID</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">User Email</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">Issue</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">Description</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">Date</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">Status</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {comp.length > 0 ? (
               comp.map((val) => (
-                <TableRow key={val._id} hover>
-                  <TableCell align="center">{val._id}</TableCell>
-                  <TableCell align="center">{val.issue}</TableCell>
-                  <TableCell align="center">{val.description}</TableCell>
-                  <TableCell align="center">
+                <TableRow 
+                  key={val._id}
+                  hover
+                  style={{ 
+                    backgroundColor: 'black',
+                    '&:hover': { backgroundColor: '#1a1a1a' }
+                  }}
+                >
+                  <TableCell style={{ color: 'white' }} align="center">{val._id}</TableCell>
+                  <TableCell style={{ color: 'white' }} align="center">{val.userId?.email || 'N/A'}</TableCell>
+                  <TableCell style={{ color: 'white' }} align="center">{val.issue}</TableCell>
+                  <TableCell style={{ color: 'white' }} align="center">{val.description}</TableCell>
+                  <TableCell style={{ color: 'white' }} align="center">
                     {new Date(val.date).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'short',
@@ -74,20 +106,29 @@ const UserCompTab = () => {
                       minute: '2-digit'
                     })}
                   </TableCell>
+                  <TableCell style={{ color: 'white' }} align="center">{val.status}</TableCell>
                   <TableCell align="center">
                     <Button 
                       variant="contained" 
-                      color="error"
-                      onClick={()=>{respComp(val._id);}}
+                      style={{
+                        backgroundColor: val.status === 'responded' ? '#DCDCDC' : '#800808',
+                        color: val.status === 'responded' ? 'black' : 'white',
+                        '&:hover': {
+                          backgroundColor: '#800808',
+                          color: 'white'
+                        }
+                      }}
+                      onClick={() => handleRespond(val._id)}
+                      disabled={val.status === 'responded'}
                     >
-                      Respond
+                      {val.status === 'responded' ? 'Responded' : 'Respond'}
                     </Button>
                   </TableCell>
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={5} align="center">
+              <TableRow style={{ backgroundColor: 'black' }}>
+                <TableCell style={{ color: 'white' }} colSpan={7} align="center">
                   No complaints found
                 </TableCell>
               </TableRow>
