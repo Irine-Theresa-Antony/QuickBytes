@@ -1,21 +1,12 @@
-
-
-
 import { Button, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const Display = ({showLikedOnly,
-  likedArticles,
-  setLikedArticles,
-  category,
-  country,
-  search }) => {
+const Display = ({showLikedOnly, likedArticles, setLikedArticles, category, country, search }) => {
   const [articles, setArticles] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
-  
 
   const normalizeApi1 = (item) => ({
     title: item.title,
@@ -49,149 +40,96 @@ const Display = ({showLikedOnly,
 
   useEffect(() => {
     const fetchNews = async () => {
-      let data = [];
-      let combinedData = [];
       let apiNews = [];
-
+      let combinedData = [];
 
       try {
-      // Try API 1
-      const res1 = await axios.get(
-        'https://newsapi.org/v2/everything?q=news&sortBy=publishedAt&pageSize=20&language=en&apiKey=954c3723dea74bdcbb55ab18866a3274'
-      );
-      apiNews = res1.data.articles.map(normalizeApi1);
-    } catch (err) {
-      console.warn('API 1 failed, trying fallback:', err.response?.status || err.message);
-      try {
-        // Try API 2 if API 1 fails
-        const res2 = await axios.get(
-          'https://gnews.io/api/v4/top-headlines?token=7446a1d00903543ecdbe8506418ea6d6&lang=en&country=in&max=10'
+        // GNews with filters
+        const resGNews = await axios.get(
+          `https://gnews.io/api/v4/top-headlines?token=7446a1d00903543ecdbe8506418ea6d6&lang=en&country=${country}&topic=${category}&q=${search || 'news'}&max=20`
         );
-        apiNews = res2.data.articles.map(normalizeApi2);
-      } catch (err2) {
-        console.error('Both APIs failed:', err2);
+        apiNews = resGNews.data.articles.map(normalizeApi2);
+      } catch (err) {
+        console.warn('GNews API failed:', err);
+        try {
+          // NewsAPI fallback
+          const resNewsAPI = await axios.get(
+            'https://newsapi.org/v2/everything?q=news&sortBy=publishedAt&pageSize=20&language=en&apiKey=954c3723dea74bdcbb55ab18866a3274'
+          );
+          apiNews = resNewsAPI.data.articles.map(normalizeApi1);
+        } catch (err2) {
+          console.error('Both APIs failed:', err2);
+        }
       }
-    }
 
-      //custom news
-       
-    try {
-      const res3 = await axios.get("http://localhost:3000/viewcustom");
-      const customNews = res3.data.map(normalizeApi3);
+      try {
+        const resCustom = await axios.get("http://localhost:3000/viewcustom");
+        const customNews = resCustom.data.map(normalizeApi3);
+        combinedData = [...apiNews, ...customNews];
+      } catch (err3) {
+        console.error("Custom API failed:", err3);
+        combinedData = [...apiNews];
+      }
 
-      // Combine API + Custom
-      combinedData = [...apiNews, ...customNews];
-    } catch (err3) {
-      console.error("Custom API failed:", err3);
-      // Even if custom fails, still use API news
-      combinedData = [...apiNews];
-    }
-
-      setArticles(combinedData.sort((a, b) => b.publishedAt - a.publishedAt));
-    };
-
-    fetchNews();
-  }, []);
-
-
-  //useEffect(()=>{},[]) to maintain bulk users
-      useEffect(() => {
-  const fetchNews = async () => {
-    try {
-      const res = await axios.get(
-        `https://gnews.io/api/v4/top-headlines?q=${search || 'news'}&topic=${category}&country=${country}&lang=en&max=20&apikey=1cbbe5fa5ff986155e9765cad37fc755`
-      );
-      let normalized = res.data.articles.map(normalizeApi2);
-
-      //  Filter titles that start with the search text (case-insensitive)
+      let finalData = combinedData;
       if (search) {
         const lowerSearch = search.toLowerCase();
-        normalized = normalized.filter(article =>
+        finalData = combinedData.filter(article =>
           article.title?.toLowerCase().startsWith(lowerSearch)
         );
       }
 
-      setArticles(normalized);
-    } catch (err) {
-      console.error('Error fetching news:', err);
+      setArticles(finalData.sort((a, b) => b.publishedAt - a.publishedAt));
+    };
+
+    fetchNews();
+  }, [category, country, search]);
+
+  const handleOpen = (articles) => {
+    setSelectedArticle(articles);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedArticle(null);
+  };
+
+  const toggleLike = (articles) => {
+    const alreadyLiked = likedArticles.find(a => a.title === articles.title);
+    if (alreadyLiked) {
+      setLikedArticles(prev => prev.filter(a => a.title !== articles.title));
+    } else {
+      setLikedArticles(prev => [...prev, articles]);
     }
   };
 
-  fetchNews();
-}, [category, country, search]);
-  
-
-      const handleOpen = (articles) => {
-      setSelectedArticle(articles);
-      setOpen(true);
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-      setSelectedArticle(null);
-    };
-  
-    const toggleLike = (articles) => {
-   const alreadyLiked = likedArticles.find(a => a.title === articles.title);
-
-   if (alreadyLiked) {
-    setLikedArticles(prev => prev.filter(a => a.title !== articles.title));
-  } else {
-    setLikedArticles(prev => [...prev, articles]);
-  }
-};
   const isLiked = (articles) =>
-  Array.isArray(likedArticles) &&
-  likedArticles.some((a) => a.url === articles.url);
-  const displayedArticles = showLikedOnly ? likedArticles : articles;
+    Array.isArray(likedArticles) &&
+    likedArticles.some((a) => a.url === articles.url);
 
+  const displayedArticles = showLikedOnly ? likedArticles : articles;
 
   return (
     <div className="box">
       <Grid container spacing={2} justifyContent="center">
-        {articles.map((val, i) => (
+        {displayedArticles.map((val, i) => (
           <Grid item xs={12} sm={6} md={4} key={i} className="grid-item">
-            
-             <Card className="newscard" sx={{ maxWidth: 345 }}>
-
-              <CardMedia
-               sx={{ height: 240 }}
-               image={val.image || 'https://placehold.co/345x240?text=No+Image'}
-                title={val.title}
-                />
+            <Card className="newscard" sx={{ maxWidth: 345 }}>
+              <CardMedia sx={{ height: 240 }} image={val.image} title={val.title} />
               <CardContent>
-                <Typography gutterBottom variant="h6" component="div">
-                  {val.title}
-                </Typography>
-                <Typography gutterBottom variant="body2" component="div">
-                  {val.publishedAt.toLocaleString()}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {val.description}
-                </Typography>
+                <Typography gutterBottom variant="h6">{val.title}</Typography>
+                <Typography gutterBottom variant="body2">{val.publishedAt.toLocaleString()}</Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>{val.description}</Typography>
               </CardContent>
-              <CardActions >
-                <Button
-                  size="small"
-                  onClick={() =>
-                    navigator.share
-                      ? navigator.share({
-                          title: val.title,
-                          text: val.description,
-                          url: val.url,
-                        })
-                      : alert('Share not supported in your browser')
-                  }
-                  sx={{ color: '#800808' }}
-                >
+              <CardActions>
+                <Button size="small" onClick={() =>
+                  navigator.share ? navigator.share({ title: val.title, text: val.description, url: val.url }) : alert('Share not supported')}>
                   Share
                 </Button>
-                <Button size="small" sx={{ mr: 13, color: '#800808' }} onClick={() => handleOpen(val)}>
-                 Learn More</Button >
-
-                 {/*  Like Button */}
-                <IconButton onClick={() => toggleLike(val)} >
-                  <FavoriteIcon color={isLiked(val) ? 'error' : 'disabled'}/>
+                <Button size="small" sx={{ mr: 13 }} onClick={() => handleOpen(val)}>Learn More</Button>
+                <IconButton onClick={() => toggleLike(val)}>
+                  <FavoriteIcon color={isLiked(val) ? 'error' : 'disabled'} />
                 </IconButton>
               </CardActions>
             </Card>
@@ -199,43 +137,19 @@ const Display = ({showLikedOnly,
         ))}
       </Grid>
 
-      {/* Dialog for full article */}
-            {selectedArticle && (
-              <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-                <DialogTitle>{selectedArticle.title}</DialogTitle>
-                <DialogContent>
-                  <Typography gutterBottom variant="body2" component="div">
-                    {new Date(selectedArticle.publishedAt).toLocaleString()}
-                  </Typography>
-                  <Typography variant="body1">
-                    {selectedArticle.content || "No content available."}
-                  </Typography>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose} sx={{ backgroundColor: '#800808',
-                 color: '#fff',
-                 '&:hover': {
-                  backgroundColor: '#a00a0a',
-                  },
-                 }}>Close</Button>
-                  <Button
-                    variant="contained"
-                    href={selectedArticle.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    sx={{backgroundColor: '#800808',
-                         color: '#fff',
-                         '&:hover': {
-                          backgroundColor: '#a00a0a',
-                           },
-                       }}
-                  >
-                    Go to Source
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            )}
-
+      {selectedArticle && (
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+          <DialogTitle>{selectedArticle.title}</DialogTitle>
+          <DialogContent>
+            <Typography gutterBottom variant="body2">{new Date(selectedArticle.publishedAt).toLocaleString()}</Typography>
+            <Typography variant="body1">{selectedArticle.content || "No content available."}</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Close</Button>
+            <Button variant="contained" href={selectedArticle.url} target="_blank" rel="noopener noreferrer">Go to Source</Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </div>
   );
 };
