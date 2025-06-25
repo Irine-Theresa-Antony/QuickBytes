@@ -13,7 +13,7 @@ import Custom from './components/Custom'
 
 import Market from './components/Market'
 import Navbar from './Components/Navbar'
-import Display from './Components/Display'
+
 import Viewcustom from './Components/Viewcustom'
 import  Filter  from './Components/Filter'
 import UserView from './Components/UserView'
@@ -26,6 +26,7 @@ import ReportNews from './Components/ReportNews'
 import AdminReport from './Components/AdminReport'
 import Message from './Components/Message'
 import Addtomarket from './Components/Addtomarket'
+import Display from './components/Display'
 
 
 
@@ -55,6 +56,10 @@ function App() {
 
       
      <Routes>
+     <Route path='/user' element={
+        <Display category={category} country={country} search={search} showLikedOnly={showLikedOnly}
+       likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>
+     }></Route>
      <Route path='/home' element={<Display showLikedOnly={showLikedOnly} category={category}
         country={country} search={search} likedArticles={likedArticles} setLikedArticles={setLikedArticles}/>}></Route>
      <Route path='/r' element={<DashboardPage/>}></Route>
